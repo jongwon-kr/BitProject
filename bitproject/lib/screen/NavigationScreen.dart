@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medicalapp/screens/qna_screen.dart';
-import 'package:medicalapp/screens/dictionary_screen.dart';
-import 'package:medicalapp/screens/home_screen.dart';
-
-import '../screens/health_check_screen.dart';
-import '../screens/my_info_screen.dart';
+import 'package:medicalapp/screen/HomeScreen.dart';
 
 List<String> titles = <String>[
   '질환백과',
@@ -16,11 +11,7 @@ List<String> titles = <String>[
 ];
 
 List<Widget> screens = <Widget>[
-  const DicionaryScreen(),
-  const healthCheckScreen(),
   const HomeScreen(),
-  const ChatPage(),
-  const MyInfoScreen(),
 ];
 
 class NavigationScreen extends StatefulWidget {

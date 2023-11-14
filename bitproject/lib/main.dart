@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medicalapp/screen/HomeScreen.dart';
+import 'package:medicalapp/screen/NavigationScreen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,11 +12,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Bit Project'),
-        ),
-      ),
+      home: NavigationScreen(),
     );
   }
 }
