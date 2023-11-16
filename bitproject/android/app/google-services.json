@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729596628865",
+    "project_id": "bitproject-f7bfe",
+    "storage_bucket": "bitproject-f7bfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729596628865:android:4aa443d1dfeeeaef812280",
+        "android_client_info": {
+          "package_name": "com.example.bitproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4bL2g9bzAOi9DR54cfAj-3sSAZGLskm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

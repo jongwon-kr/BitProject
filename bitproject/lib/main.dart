@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicalapp/screen/HomeScreen.dart';
+
 import 'package:medicalapp/screen/NavigationScreen.dart';
 
 void main() {
