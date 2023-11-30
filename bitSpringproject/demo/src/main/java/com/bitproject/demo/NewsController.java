@@ -18,7 +18,6 @@ public class NewsController {
 				+ "존슨앤드존슨 백신 폐기로 1%이상 떨어져\r\n"
 				+ "맥도날드는 고객정보 유출에도 1%대 상승");
 		map.put("category", "STOCK");
-		
 		return map;
 	}
 }
