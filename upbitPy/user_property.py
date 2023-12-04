@@ -5,8 +5,8 @@ import hashlib
 from urllib.parse import urlencode
 import requests
 
-access_key = f"0O0byeSHERUnKUdn8WtKHTaksI9ggpx92Gpa99lG"
-secret_key = f"D1AxPbP693JciipLjNPf3bcI66w3pKTU9MEwELWx"
+access_key = f"access_key"
+secret_key = f"secret_key"
 server_url = f"https://api.upbit.com"
 
 payload = {
@@ -22,5 +22,9 @@ headers = {
 
 res = requests.get(server_url + "/v1/accounts", headers=headers)
 
-print("보유 자본")
 print(res)
+
+currency_data = dict(res.json()[0])
+
+print("보유 자본")
+print(f"{currency_data['currency']}: {currency_data['balance']}")
