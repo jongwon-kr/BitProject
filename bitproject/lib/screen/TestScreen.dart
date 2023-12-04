@@ -1,25 +1,29 @@
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
+class TestScreen extends StatefulWidget {
   static String id = "chat_screen";
 
-  const HomeScreen({super.key});
+  const TestScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _TestScreenState createState() => _TestScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _TestScreenState extends State<TestScreen> {
+  late final topArticles = <String, String>{};
+
   final messageTextController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   bool isLogin = false;
   late User loggedInUser;
   String nickname = '';
-  late final topArticles = <String, String>{};
 
   void getCurrentUser() async {
     try {
@@ -65,10 +69,28 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         color: Colors.teal[50],
-        child: ListView(
-          children: const [Text("data")],
-        ),
+        child: ListView(children: [
+          TextButton(
+            onPressed: onPressed,
+            child: const Text("버튼"),
+          ),
+        ]),
       ),
     );
+  }
+
+  void onPressed() {
+    String url = "https://api.upbit.com/v1/market/all";
+  }
+
+  Future<dynamic> get(String url) async {
+    Map<String, String> headers = {
+      "accept": "application/json",
+    };
+    print('get() url : $url');
+    http.Response res =
+        await http.get(Uri.encodeFull(url) as Uri, headers: headers);
+    final int statusCode = res.statusCode;
+    if (statusCode < 200 || statusCode > 400) {}
   }
 }

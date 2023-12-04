@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicalapp/screen/HomeScreen.dart';
+import 'package:medicalapp/screen/TestScreen.dart';
 import 'package:medicalapp/screen/login/registration_screen.dart';
 import 'package:medicalapp/screen/login/welcome_screen.dart';
 
@@ -14,7 +15,7 @@ List<String> titles = <String>[
 
 List<Widget> screens = <Widget>[
   const WelcomeScreen(),
-  const HomeScreen(),
+  const TestScreen(),
   const HomeScreen(),
   const HomeScreen(),
   const HomeScreen(),
