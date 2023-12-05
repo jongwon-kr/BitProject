@@ -15,8 +15,8 @@ List<String> titles = <String>[
 
 List<Widget> screens = <Widget>[
   const WelcomeScreen(),
-  const TestScreen(),
   const HomeScreen(),
+  const TestScreen(),
   const HomeScreen(),
   const HomeScreen(),
 ];

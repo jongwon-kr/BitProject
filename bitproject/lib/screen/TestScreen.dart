@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,17 +79,19 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void onPressed() {
-    String url = "https://api.upbit.com/v1/market/all";
+    final url = Uri.parse("https://api.upbit.com/v1/orderbook?market=KRW-BTC");
+    get(url);
   }
 
-  Future<dynamic> get(String url) async {
+  Future<dynamic> get(url) async {
     Map<String, String> headers = {
       "accept": "application/json",
     };
     print('get() url : $url');
-    http.Response res =
-        await http.get(Uri.encodeFull(url) as Uri, headers: headers);
-    final int statusCode = res.statusCode;
-    if (statusCode < 200 || statusCode > 400) {}
+    http.Response res = await http.get(url, headers: headers);
+    List<dynamic> myJson = jsonDecode(res.body);
+
+    print('Response status: ${res.statusCode}');
+    print('Response body: $myJson');
   }
 }
