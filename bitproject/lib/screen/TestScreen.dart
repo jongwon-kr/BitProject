@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:medicalapp/model/coinInfo_model.dart';
+import 'package:medicalapp/services/upbit_api.dart';
 
 class TestScreen extends StatefulWidget {
   static String id = "chat_screen";
@@ -79,19 +81,20 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void onPressed() {
-    final url = Uri.parse("https://api.upbit.com/v1/orderbook?market=KRW-BTC");
-    get(url);
-  }
-
-  Future<dynamic> get(url) async {
-    Map<String, String> headers = {
-      "accept": "application/json",
-    };
-    print('get() url : $url');
-    http.Response res = await http.get(url, headers: headers);
-    List<dynamic> myJson = jsonDecode(res.body);
-
-    print('Response status: ${res.statusCode}');
-    print('Response body: $myJson');
+    Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfo();
+    FutureBuilder(
+      future: coinInfos,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          for (var coinInfo in snapshot.data!) {
+            print("????asdasd");
+            print(coinInfo.market);
+            print(coinInfo.korean_name);
+            print(coinInfo.english_name);
+          }
+        }
+        return Container();
+      },
+    );
   }
 }
