@@ -85,7 +85,7 @@ class _TestScreenState extends State<TestScreen> {
     FutureBuilder(
       future: coinInfos,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.hasData) {
           for (var coinInfo in snapshot.data!) {
             print("????asdasd");
             print(coinInfo.market);
