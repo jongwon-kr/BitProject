@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:medicalapp/model/coinInfo_model.dart';
+import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_api.dart';
 
 class TestScreen extends StatefulWidget {
@@ -81,21 +80,6 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void onPressed() {
-    Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfo();
-
-    FutureBuilder(
-      future: coinInfos,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          for (var coinInfo in snapshot.data!) {
-            print("????asdasd");
-            print(coinInfo.market);
-            print(coinInfo.korean_name);
-            print(coinInfo.english_name);
-          }
-        }
-        return Container();
-      },
-    );
+    UpbitApi.getCoinInfo();
   }
 }
