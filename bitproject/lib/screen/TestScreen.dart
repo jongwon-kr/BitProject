@@ -82,6 +82,7 @@ class _TestScreenState extends State<TestScreen> {
 
   void onPressed() {
     Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfo();
+
     FutureBuilder(
       future: coinInfos,
       builder: (context, snapshot) {
