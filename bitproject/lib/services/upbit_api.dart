@@ -27,7 +27,7 @@ class UpbitApi {
         double candleAccTradePrice = coinInfo['candle_acc_trade_price'];
         double candleAccTradeVolume = coinInfo['candle_acc_trade_volume'];
         print(
-            'Market: $market, candle_date_time_kst: $candleDateTimeKst, openingPrice: $openingPrice, highPrice: $highPrice, lowPrice: $lowPrice, tradePrice: $tradePrice, candleAccTradePrice: $candleAccTradePrice, candleAccTradeVolume: $candleAccTradeVolume');
+            'Market: $market, caandle_date_time_kst: $candleDateTimeKst, openingPrice: $openingPrice, highPrice: $highPrice, lowPrice: $lowPrice, tradePrice: $tradePrice, candleAccTradePrice: $candleAccTradePrice, candleAccTradeVolume: $candleAccTradeVolume');
       }
     }
     return coinInfoInstances;
