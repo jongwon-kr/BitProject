@@ -24,6 +24,7 @@ class _MarketScreenState extends State<MarketScreen> {
   String nickname = '';
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
   String searchText = "";
+  Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfo();
 
   void getCurrentUser() async {
     try {
@@ -88,13 +89,15 @@ class _MarketScreenState extends State<MarketScreen> {
                           left: 10, right: 10, bottom: 10, top: 3),
                       child: TextField(
                         onSubmitted: (Value) async {
-                          Future<List<CoinInfoModel>> coinInfos =
-                              UpbitApi.getCoinInfo();
-                          for (var coininfo in await coinInfos) {
-                            print(coininfo.market);
-                            print(coininfo.korean_name);
-                            print(coininfo.english_name);
+                          int cnt = 0;
+                          for (CoinInfoModel coininfo in await coinInfos) {
+                            if (coininfo.market.contains("KRW-")) {
+                              cnt++;
+                              print(
+                                  'market : ${coininfo.market}, korean_name : ${coininfo.korean_name}, english_name : ${coininfo.english_name}');
+                            }
                           }
+                          print('coinCount = $cnt');
                         },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
@@ -205,6 +208,15 @@ class _MarketScreenState extends State<MarketScreen> {
                 ],
               ),
             ),
+            Container(
+              width: width,
+              color: Colors.white,
+              child: const Column(
+                children: [
+                  Row(),
+                ],
+              ),
+            )
           ],
         ),
       ),
