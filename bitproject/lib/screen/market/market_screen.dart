@@ -69,25 +69,52 @@ class _MarketScreenState extends State<MarketScreen> {
       body: Container(
         color: Colors.white,
         child: ListView(
-          children: const [
+          children: [
             // 코인/심볼 검색
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: TextField(
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      hintText: "코인/심볼명 입력",
-                      hintStyle: TextStyle(fontSize: 14),
-                      icon: Padding(
-                        padding: EdgeInsets.only(left: 20, top: 5),
-                        child: Icon(Icons.search),
+            Container(
+              width: width,
+              height: height * 0.2,
+              color: Colors.yellow[600],
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: width,
+                    height: height * 0.09,
+                    child: const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.search),
+                          hintText: '코인/심볼명 입력',
+                          hintStyle: TextStyle(fontSize: 15),
+                        ),
                       ),
                     ),
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Container(
+                      width: width,
+                      height: height * 0.1,
+                      color: Colors.yellow[500],
+                      child: const Column(
+                        children: [
+                          Column(),
+                          Column(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
