@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medicalapp/models/coinInfo_model.dart';
+import 'package:medicalapp/services/upbit_api.dart';
 
 class MarketScreen extends StatefulWidget {
   static String id = "chat_screen";
@@ -80,11 +83,20 @@ class _MarketScreenState extends State<MarketScreen> {
                   SizedBox(
                     width: width,
                     height: height * 0.09,
-                    child: const Padding(
-                      padding: EdgeInsets.only(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10, top: 3),
                       child: TextField(
-                        decoration: InputDecoration(
+                        onSubmitted: (Value) async {
+                          Future<List<CoinInfoModel>> coinInfos =
+                              UpbitApi.getCoinInfo();
+                          for (var coininfo in await coinInfos) {
+                            print(coininfo.market);
+                            print(coininfo.korean_name);
+                            print(coininfo.english_name);
+                          }
+                        },
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(

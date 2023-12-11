@@ -11,7 +11,7 @@
         </intent>
     </queries>
     <application
-        android:label="헬스체커"
+        android:label="FunBit"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

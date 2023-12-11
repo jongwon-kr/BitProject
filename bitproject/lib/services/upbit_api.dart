@@ -19,7 +19,11 @@ class UpbitApi {
       final coinInfos = jsonDecode(response.body);
       for (var coinInfo in coinInfos) {
         String market = coinInfo['market'];
-        print('Market: $market');
+        String koreanName = coinInfo['korean_name'];
+        String englishName = coinInfo['english_name'];
+        print(
+            'Market: $market, koreanName: $koreanName, englishName: $englishName');
+        coinInfoInstances.add(jsonDecode(coinInfo));
       }
     }
     return coinInfoInstances;
