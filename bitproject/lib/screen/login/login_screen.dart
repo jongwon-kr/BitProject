@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:medicalapp/screen/NavigationScreen.dart';
+import 'package:medicalapp/screen/navigation_screen.dart';
 import 'package:medicalapp/screen/login/find_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {

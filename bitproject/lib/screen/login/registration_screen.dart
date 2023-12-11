@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:medicalapp/screen/NavigationScreen.dart';
+import 'package:medicalapp/screen/navigation_screen.dart';
 
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 

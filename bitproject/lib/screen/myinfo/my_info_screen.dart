@@ -1,29 +1,25 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:medicalapp/models/coinInfo_model.dart';
-import 'package:medicalapp/services/upbit_api.dart';
 
-class TestScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+
+class MyInfoScreen extends StatefulWidget {
   static String id = "chat_screen";
 
-  const TestScreen({super.key});
+  const MyInfoScreen({super.key});
 
   @override
-  _TestScreenState createState() => _TestScreenState();
+  _MyInfoScreenState createState() => _MyInfoScreenState();
 }
 
-class _TestScreenState extends State<TestScreen> {
-  late final topArticles = <String, String>{};
-
+class _MyInfoScreenState extends State<MyInfoScreen> {
   final messageTextController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   bool isLogin = false;
   late User loggedInUser;
   String nickname = '';
+  Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
 
   void getCurrentUser() async {
     try {
@@ -46,40 +42,35 @@ class _TestScreenState extends State<TestScreen> {
       appBar: AppBar(
         toolbarHeight: 40,
         shadowColor: Colors.white,
-        centerTitle: true,
         elevation: 0,
         titleSpacing: 10,
-        backgroundColor: Colors.teal[700],
-        leading: const Padding(
-          padding: EdgeInsets.all(8.0),
-        ),
+        backgroundColor: baseColor,
         leadingWidth: 10,
-        title: ListTile(
-          title: Text(
-            isLogin
-                ? "${loggedInUser.email!.split("@")[0]} 님 어서오세요Hello!!"
-                : "안녕하세요!",
+        title: const Padding(
+          padding: EdgeInsets.only(left: 12.0),
+          child: Text(
+            "Market",
             style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey[100],
-                fontWeight: FontWeight.w500),
+                fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700),
           ),
         ),
-        actions: const [],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              color: Colors.black,
+              onPressed: () {},
+              icon: const Icon(Icons.settings),
+            ),
+          ),
+        ],
       ),
       body: Container(
-        color: Colors.teal[50],
-        child: ListView(children: [
-          TextButton(
-            onPressed: onPressed,
-            child: const Text("버튼"),
-          ),
-        ]),
+        color: Colors.white,
+        child: ListView(
+          children: const [Text("data")],
+        ),
       ),
     );
-  }
-
-  void onPressed() {
-    UpbitApi.getCoinInfo();
   }
 }
