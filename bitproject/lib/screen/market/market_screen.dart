@@ -20,6 +20,7 @@ class _MarketScreenState extends State<MarketScreen> {
   late User loggedInUser;
   String nickname = '';
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
+  String searchText = "";
 
   void getCurrentUser() async {
     try {
@@ -68,7 +69,27 @@ class _MarketScreenState extends State<MarketScreen> {
       body: Container(
         color: Colors.white,
         child: ListView(
-          children: const [Text("data")],
+          children: const [
+            // 코인/심볼 검색
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "코인/심볼명 입력",
+                      hintStyle: TextStyle(fontSize: 14),
+                      icon: Padding(
+                        padding: EdgeInsets.only(left: 20, top: 5),
+                        child: Icon(Icons.search),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );

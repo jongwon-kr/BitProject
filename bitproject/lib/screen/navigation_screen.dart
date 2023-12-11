@@ -46,8 +46,8 @@ class _NavigationState extends State<NavigationScreen> {
     return Scaffold(
       key: scaffoldKey,
       bottomNavigationBar: NavigationBar(
-        indicatorColor: Colors.yellow[500],
-        backgroundColor: Colors.yellow[600],
+        indicatorColor: Colors.grey[200],
+        backgroundColor: Colors.grey[50],
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
