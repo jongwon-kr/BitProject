@@ -73,7 +73,7 @@ class _MarketScreenState extends State<MarketScreen> {
             // 코인/심볼 검색
             Container(
               width: width,
-              height: height * 0.2,
+              height: height * 0.17,
               color: Colors.yellow[600],
               child: Column(
                 children: [
@@ -81,13 +81,14 @@ class _MarketScreenState extends State<MarketScreen> {
                     width: width,
                     height: height * 0.09,
                     child: const Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(
+                          left: 10, right: 10, bottom: 10, top: 3),
                       child: TextField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.all(
-                              Radius.circular(20),
+                              Radius.circular(30),
                             ),
                           ),
                           filled: true,
@@ -103,12 +104,88 @@ class _MarketScreenState extends State<MarketScreen> {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
                       width: width,
-                      height: height * 0.1,
+                      height: height * 0.07,
                       color: Colors.yellow[500],
-                      child: const Column(
+                      child: Column(
                         children: [
-                          Column(),
-                          Column(),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.5 - 20,
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 5, left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("총매수"),
+                                          Text("매수값"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.5 - 20,
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 5, left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("평가손익"),
+                                          Text("손익"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.5 - 20,
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 5, left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("총평가"),
+                                          Text("평가"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.5 - 20,
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 5, left: 10, right: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("수익률"),
+                                          Text("수익률"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ),
