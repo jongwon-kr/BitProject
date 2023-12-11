@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_api.dart';
 
@@ -24,7 +25,21 @@ class _MarketScreenState extends State<MarketScreen> {
   String nickname = '';
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
   String searchText = "";
-  Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfo();
+  late Future<List<CoinInfoModel>> coinInfos;
+  late List<Map<String, dynamic>> coins;
+  int currentPageIndex = 0;
+  final List<bool> selectedMarkets = <bool>[true, false, false];
+  List<Widget> Markets = <Widget>[
+    const Text('KRW'),
+    const Text('BTC'),
+    const Text('관심목록')
+  ];
+  final List<bool> sortCoins = <bool>[
+    true,
+    true,
+    true,
+    true
+  ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금/
 
   void getCurrentUser() async {
     try {
@@ -36,6 +51,17 @@ class _MarketScreenState extends State<MarketScreen> {
         isLogin = false;
       }
     } catch (e) {}
+  }
+
+  void getCurrentCoins() async {
+    coinInfos = UpbitApi.getCoinInfoAll();
+  }
+
+  @override
+  void initState() {
+    getCurrentUser();
+    getCurrentCoins();
+    super.initState();
   }
 
   @override
@@ -90,13 +116,6 @@ class _MarketScreenState extends State<MarketScreen> {
                       child: TextField(
                         onSubmitted: (Value) async {
                           int cnt = 0;
-                          for (CoinInfoModel coininfo in await coinInfos) {
-                            if (coininfo.market.contains("KRW-")) {
-                              cnt++;
-                              print(
-                                  'market : ${coininfo.market}, korean_name : ${coininfo.korean_name}, english_name : ${coininfo.english_name}');
-                            }
-                          }
                           print('coinCount = $cnt');
                         },
                         decoration: const InputDecoration(
@@ -211,9 +230,139 @@ class _MarketScreenState extends State<MarketScreen> {
             Container(
               width: width,
               color: Colors.white,
-              child: const Column(
+              child: Column(
                 children: [
-                  Row(),
+                  Container(
+                    decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide())),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                      child: Row(
+                        children: [
+                          ToggleButtons(
+                            direction: Axis.horizontal,
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int i = 0;
+                                    i < selectedMarkets.length;
+                                    i++) {
+                                  selectedMarkets[i] = i == index;
+                                }
+                              });
+                              print(selectedMarkets);
+                            },
+                            selectedBorderColor: Colors.black,
+                            selectedColor: Colors.white,
+                            fillColor: Colors.grey[800],
+                            color: Colors.grey[700],
+                            constraints: const BoxConstraints(
+                              minHeight: 35,
+                              minWidth: 80,
+                            ),
+                            isSelected: selectedMarkets,
+                            children: Markets,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            border:
+                                Border(bottom: BorderSide(color: Colors.grey))),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, bottom: 10, right: 10, top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: width * 0.30,
+                                child: const Row(
+                                  children: [
+                                    Text("한문명"),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Icon(
+                                        Icons.swap_horiz,
+                                        size: 16,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.23,
+                                child: const Row(
+                                  children: [
+                                    Text("현재가"),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Icon(
+                                        Icons.swap_vert,
+                                        size: 16,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.18,
+                                child: const Row(
+                                  children: [
+                                    Text("전일 대비"),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Icon(
+                                        Icons.swap_vert,
+                                        size: 16,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.18,
+                                child: const Row(
+                                  children: [
+                                    Text("거래 대금"),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 3),
+                                      child: Icon(
+                                        Icons.swap_vert,
+                                        size: 16,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  FutureBuilder<List<CoinInfoModel>>(
+                    future: coinInfos,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot) {
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            for (CoinInfoModel ci in snapshot.data)
+                              getCurrentCoin(height, width, ci)
+                          ],
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  )
                 ],
               ),
             )
@@ -221,5 +370,93 @@ class _MarketScreenState extends State<MarketScreen> {
         ),
       ),
     );
+  }
+
+  Container getCurrentCoin(
+    double height,
+    double width,
+    CoinInfoModel ci,
+  ) {
+    if (selectedMarkets[0]) {
+      if (ci.market.contains("KRW-")) {
+        return Container(
+          height: height * 0.06,
+          decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey))),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: width * 0.3,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(Icons.candlestick_chart),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              sortCoins[0] ? ci.korean_name : ci.english_name,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
+                            ),
+                            Text(
+                              ci.market.substring(4),
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.25,
+                  child: const Row(
+                    children: [
+                      Text("50,000,000"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.14,
+                  child: const Row(
+                    children: [
+                      Text("-300%"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.20,
+                  child: const Row(
+                    children: [
+                      Text("504,201백만"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    } else if (selectedMarkets[1]) {
+      if (ci.market.contains("BTC-")) {}
+    } else if (selectedMarkets[2]) {
+      return Container();
+    } else {
+      return Container();
+    }
+    return Container();
   }
 }
