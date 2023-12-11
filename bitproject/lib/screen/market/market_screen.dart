@@ -138,8 +138,8 @@ class _MarketScreenState extends State<MarketScreen> {
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
                       width: width,
-                      height: height * 0.07,
-                      color: Colors.yellow[500],
+                      height: height * 0.08,
+                      color: Colors.yellow[600],
                       child: Column(
                         children: [
                           Column(
@@ -310,10 +310,13 @@ class _MarketScreenState extends State<MarketScreen> {
                                 ),
                               ),
                               SizedBox(
-                                width: width * 0.18,
+                                width: width * 0.20,
                                 child: const Row(
                                   children: [
-                                    Text("전일 대비"),
+                                    Text(
+                                      "전일대비",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 3),
                                       child: Icon(
@@ -328,7 +331,10 @@ class _MarketScreenState extends State<MarketScreen> {
                                 width: width * 0.18,
                                 child: const Row(
                                   children: [
-                                    Text("거래 대금"),
+                                    Text(
+                                      "거래대금",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 3),
                                       child: Icon(
@@ -380,17 +386,17 @@ class _MarketScreenState extends State<MarketScreen> {
     if (selectedMarkets[0]) {
       if (ci.market.contains("KRW-")) {
         return Container(
-          height: height * 0.06,
+          height: height * 0.07,
           decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey))),
           child: Padding(
             padding:
-                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 5),
+                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: width * 0.3,
+                  width: width * 0.28,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -441,7 +447,10 @@ class _MarketScreenState extends State<MarketScreen> {
                   width: width * 0.20,
                   child: const Row(
                     children: [
-                      Text("504,201백만"),
+                      Text(
+                        "504,201백만",
+                        style: TextStyle(fontSize: 13),
+                      ),
                     ],
                   ),
                 ),
@@ -451,7 +460,81 @@ class _MarketScreenState extends State<MarketScreen> {
         );
       }
     } else if (selectedMarkets[1]) {
-      if (ci.market.contains("BTC-")) {}
+      if (ci.market.contains("BTC-")) {
+        return Container(
+          height: height * 0.07,
+          decoration: const BoxDecoration(
+              border: Border(bottom: BorderSide(color: Colors.grey))),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: width * 0.28,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 5),
+                          child: Icon(Icons.candlestick_chart),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              sortCoins[0] ? ci.korean_name : ci.english_name,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
+                            ),
+                            Text(
+                              ci.market.substring(4),
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.25,
+                  child: const Row(
+                    children: [
+                      Text("50,000,000"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.14,
+                  child: const Row(
+                    children: [
+                      Text("-300%"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.20,
+                  child: const Row(
+                    children: [
+                      Text(
+                        "504,201백만",
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
     } else if (selectedMarkets[2]) {
       return Container();
     } else {
