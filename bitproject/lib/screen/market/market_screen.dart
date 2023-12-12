@@ -16,7 +16,8 @@ class MarketScreen extends StatefulWidget {
   _MarketScreenState createState() => _MarketScreenState();
 }
 
-class _MarketScreenState extends State<MarketScreen> {
+class _MarketScreenState extends State<MarketScreen>
+    with AutomaticKeepAliveClientMixin {
   final messageTextController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -25,9 +26,8 @@ class _MarketScreenState extends State<MarketScreen> {
   String nickname = '';
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
   String searchText = "";
-  late Future<List<CoinInfoModel>> coinInfos;
+  late Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfoAll();
   late List<Map<String, dynamic>> coins;
-  int currentPageIndex = 0;
   final List<bool> selectedMarkets = <bool>[true, false, false];
   List<Widget> Markets = <Widget>[
     const Text('KRW'),
@@ -40,7 +40,8 @@ class _MarketScreenState extends State<MarketScreen> {
     true,
     true
   ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금/
-
+  @override
+  bool get wantKeepAlive => true;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -53,14 +54,9 @@ class _MarketScreenState extends State<MarketScreen> {
     } catch (e) {}
   }
 
-  void getCurrentCoins() async {
-    coinInfos = UpbitApi.getCoinInfoAll();
-  }
-
   @override
   void initState() {
     getCurrentUser();
-    getCurrentCoins();
     super.initState();
   }
 
@@ -361,7 +357,7 @@ class _MarketScreenState extends State<MarketScreen> {
                         return Column(
                           children: [
                             for (CoinInfoModel ci in snapshot.data)
-                              getCurrentCoin(height, width, ci)
+                              getCurrentCoins(height, width, ci)
                           ],
                         );
                       } else {
@@ -378,162 +374,18 @@ class _MarketScreenState extends State<MarketScreen> {
     );
   }
 
-  Container getCurrentCoin(
+  Container getCurrentCoins(
     double height,
     double width,
     CoinInfoModel ci,
   ) {
     if (selectedMarkets[0]) {
       if (ci.market.contains("KRW-")) {
-        return Container(
-          height: height * 0.07,
-          decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey))),
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: width * 0.28,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: Icon(Icons.candlestick_chart),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                              sortCoins[0] ? ci.korean_name : ci.english_name,
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                            ),
-                            Text(
-                              ci.market.substring(4),
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.25,
-                  child: const Row(
-                    children: [
-                      Text("50,000,000"),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.14,
-                  child: const Row(
-                    children: [
-                      Text("-300%"),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.20,
-                  child: const Row(
-                    children: [
-                      Text(
-                        "504,201백만",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        return getCoinContainer(height, width, ci);
       }
     } else if (selectedMarkets[1]) {
       if (ci.market.contains("BTC-")) {
-        return Container(
-          height: height * 0.07,
-          decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.grey))),
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: width * 0.28,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: Icon(Icons.candlestick_chart),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                              sortCoins[0] ? ci.korean_name : ci.english_name,
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                            ),
-                            Text(
-                              ci.market.substring(4),
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.25,
-                  child: const Row(
-                    children: [
-                      Text("50,000,000"),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.14,
-                  child: const Row(
-                    children: [
-                      Text("-300%"),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: width * 0.20,
-                  child: const Row(
-                    children: [
-                      Text(
-                        "504,201백만",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        return getCoinContainer(height, width, ci);
       }
     } else if (selectedMarkets[2]) {
       return Container();
@@ -541,5 +393,84 @@ class _MarketScreenState extends State<MarketScreen> {
       return Container();
     }
     return Container();
+  }
+
+  Container getCoinContainer(double height, double width, CoinInfoModel ci) {
+    return Container(
+      height: height * 0.07,
+      decoration: const BoxDecoration(
+          border: Border(
+              bottom: BorderSide(color: Color.fromRGBO(224, 224, 224, 1)))),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: width * 0.28,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Icon(Icons.candlestick_chart),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            sortCoins[0] ? ci.korean_name : ci.english_name,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                          ),
+                          Text(
+                            ci.market.substring(4),
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: width * 0.25,
+              child: const Row(
+                children: [
+                  Text("50,000,000"),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: width * 0.14,
+              child: const Row(
+                children: [
+                  Text("-300%"),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: width * 0.20,
+              child: const Row(
+                children: [
+                  Text(
+                    "504,201백만",
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
