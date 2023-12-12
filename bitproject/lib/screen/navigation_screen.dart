@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:medicalapp/screen/GetXHttpPage.dart';
 import 'package:medicalapp/screen/home/home_screen.dart';
 import 'package:medicalapp/screen/market/market_screen.dart';
-
-import 'package:medicalapp/screen/login/welcome_screen.dart';
-import 'package:medicalapp/widget/price_chart.dart';
-import 'package:medicalapp/widget/stock_chart_view.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -18,7 +14,7 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationState extends State<NavigationScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  int currentPageIndex = 2; // 2번이 Home
+  int currentPageIndex = 0; // 0번이 market
 
   final List<String> titles = <String>[
     '거래소',
@@ -32,8 +28,8 @@ class _NavigationState extends State<NavigationScreen> {
     const MarketScreen(),
     const HomeScreen(),
     const HomeScreen(),
-    StockChartView(),
-    PriceChart(),
+    GetXHttpPage(),
+    GetXHttpPage2(),
   ];
 
   void onTap(int index) {

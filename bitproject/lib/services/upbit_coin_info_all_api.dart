@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coinInfo_model.dart';
 
-class UpbitApi {
+class UpbitCoinInfoAllApi {
   static const String baseUrl = 'https://api.upbit.com';
 
   static Future<List<CoinInfoModel>> getCoinInfoAll() async {

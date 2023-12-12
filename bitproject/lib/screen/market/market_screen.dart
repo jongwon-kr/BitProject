@@ -4,8 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart' as GetX;
+import 'package:http/http.dart' as http;
+
 import 'package:medicalapp/models/coinInfo_model.dart';
-import 'package:medicalapp/services/upbit_api.dart';
+import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
 
 class MarketScreen extends StatefulWidget {
   static String id = "chat_screen";
@@ -26,7 +29,8 @@ class _MarketScreenState extends State<MarketScreen>
   String nickname = '';
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
   String searchText = "";
-  late Future<List<CoinInfoModel>> coinInfos = UpbitApi.getCoinInfoAll();
+  late Future<List<CoinInfoModel>> coinInfos =
+      UpbitCoinInfoAllApi.getCoinInfoAll();
   late List<Map<String, dynamic>> coins;
   final List<bool> selectedMarkets = <bool>[true, false, false];
   List<Widget> Markets = <Widget>[
@@ -270,31 +274,49 @@ class _MarketScreenState extends State<MarketScreen>
                             border:
                                 Border(bottom: BorderSide(color: Colors.grey))),
                         child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, bottom: 10, right: 10, top: 10),
+                          padding: const EdgeInsets.only(bottom: 5, top: 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: width * 0.30,
-                                child: const Row(
-                                  children: [
-                                    Text("한문명"),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 3),
-                                      child: Icon(
-                                        Icons.swap_horiz,
-                                        size: 16,
+                                width: width * 0.3,
+                                child: InkWell(
+                                  onTap: () {
+                                    if (sortCoins[0]) {
+                                      sortCoins[0] = false;
+                                    } else if (!sortCoins[0]) {
+                                      sortCoins[0] = true;
+                                    }
+                                    setState(() {});
+                                    print("object");
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        sortCoins[0] ? "한글명" : "영문명",
+                                        style: const TextStyle(fontSize: 13),
                                       ),
-                                    )
-                                  ],
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 3),
+                                        child: Icon(
+                                          Icons.swap_horiz,
+                                          size: 16,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                width: width * 0.23,
+                                width: width * 0.25,
                                 child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text("현재가"),
+                                    Text(
+                                      "현재가",
+                                      style: TextStyle(fontSize: 13),
+                                    ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 3),
                                       child: Icon(
@@ -306,8 +328,9 @@ class _MarketScreenState extends State<MarketScreen>
                                 ),
                               ),
                               SizedBox(
-                                width: width * 0.20,
+                                width: width * 0.2,
                                 child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       "전일대비",
@@ -324,8 +347,9 @@ class _MarketScreenState extends State<MarketScreen>
                                 ),
                               ),
                               SizedBox(
-                                width: width * 0.18,
+                                width: width * 0.25,
                                 child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       "거래대금",
@@ -395,23 +419,26 @@ class _MarketScreenState extends State<MarketScreen>
     return Container();
   }
 
-  Container getCoinContainer(double height, double width, CoinInfoModel ci) {
+  getCoinContainer(double height, double width, CoinInfoModel ci) {
     return Container(
       height: height * 0.07,
       decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Color.fromRGBO(224, 224, 224, 1)))),
+        border: Border(
+          bottom: BorderSide(
+            color: Color.fromRGBO(224, 224, 224, 1),
+          ),
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 7),
+        padding: const EdgeInsets.only(bottom: 5, top: 7),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: width * 0.28,
+              width: width * 0.3,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(right: 5),
@@ -431,8 +458,9 @@ class _MarketScreenState extends State<MarketScreen>
                                 fontSize: 14, color: Colors.black),
                           ),
                           Text(
-                            ci.market.substring(4),
-                            style: const TextStyle(fontSize: 12),
+                            "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -444,22 +472,25 @@ class _MarketScreenState extends State<MarketScreen>
             SizedBox(
               width: width * 0.25,
               child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("50,000,000"),
+                  Text(""),
                 ],
               ),
             ),
             SizedBox(
-              width: width * 0.14,
+              width: width * 0.2,
               child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("-300%"),
                 ],
               ),
             ),
             SizedBox(
-              width: width * 0.20,
+              width: width * 0.25,
               child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "504,201백만",
@@ -472,5 +503,23 @@ class _MarketScreenState extends State<MarketScreen>
         ),
       ),
     );
+  }
+}
+
+// Use http Package
+class GetXHttp extends GetX.GetxController {
+  final GetX.RxList<dynamic> data = [].obs;
+  final String _url = "https://api.upbit.com/v1/market/all";
+
+  Future<void> connectServer() async {
+    if (data.isEmpty) {
+      final http.Response res = await http.get(Uri.parse(_url));
+      final List result = json.decode(res.body);
+      // ignore: unnecessary_statements
+      data + result;
+    } else {
+      data.clear();
+    }
+    return;
   }
 }
