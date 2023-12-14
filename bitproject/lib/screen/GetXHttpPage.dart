@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:medicalapp/models/coin_price_model.dart';
 
+// ignore: must_be_immutable
 class GetXHttpPage extends StatefulWidget {
   bool isRunning = false;
 
@@ -25,7 +26,7 @@ class _GetXHttpPageState extends State<GetXHttpPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.record_voice_over_rounded),
-        onPressed: () async => await _getXController.connectServer(),
+        onPressed: () async => await _getXController.getTradePrice(),
       ),
     );
   }
@@ -33,14 +34,21 @@ class _GetXHttpPageState extends State<GetXHttpPage> {
 
 // Use http Package
 class GetXHttp extends GetX.GetxController {
-  late GetX.RxDouble data = 0.0.obs;
+  GetX.RxString data = "".obs;
   final String _url = "https://api.upbit.com/v1/ticker?markets=KRW-BTC";
 
-  Future<void> connectServer() async {
+  Future<void> getTradePrice() async {
     final http.Response res = await http.get(Uri.parse(_url));
     final coinPrice = jsonDecode(res.body);
-    for (var coinPirce in coinPrice) {
-      data = RxDouble(CoinPirceModel.fromJson(coinPirce).trade_price);
+    GetX.RxString result = "".obs;
+    if (res.statusCode == 200) {
+      for (var coinPirce in coinPrice) {
+        result = CoinPirceModel.fromJson(coinPirce).trade_price.toString().obs;
+      }
+      data = result;
+      print(data + "???");
+    } else {
+      data.close();
     }
     return;
   }
