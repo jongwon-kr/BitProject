@@ -1,13 +1,19 @@
 class CoinPirceModel {
-  final dynamic market,
-      trade_price,
-      change,
-      signed_change_rate,
-      acc_trade_price;
+  final dynamic market, change;
+  final double tradePrice, signedChangeRate, acctradePrice;
+
+  CoinPirceModel(
+    this.market,
+    this.change,
+    this.tradePrice,
+    this.signedChangeRate,
+    this.acctradePrice,
+  );
+
   CoinPirceModel.fromJson(Map<String, dynamic> json)
       : market = json['market'],
-        trade_price = json['trade_price'],
+        tradePrice = json['trade_price'],
         change = json['change'],
-        signed_change_rate = json['signed_change_rate'],
-        acc_trade_price = json['acc_trade_price'];
+        signedChangeRate = json['signed_change_rate'],
+        acctradePrice = json['acc_trade_price'];
 }

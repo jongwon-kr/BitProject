@@ -1,103 +1,73 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' as GetX;
-import 'package:get/get_rx/get_rx.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:medicalapp/models/coin_price_model.dart';
+
+import '../controller/coin_controller.dart';
 
 // ignore: must_be_immutable
 class GetXHttpPage extends StatefulWidget {
-  bool isRunning = false;
-
-  GetXHttpPage({super.key});
+  const GetXHttpPage({super.key});
 
   @override
   State<GetXHttpPage> createState() => _GetXHttpPageState();
 }
 
 class _GetXHttpPageState extends State<GetXHttpPage> {
-  final GetXHttp _getXController = GetX.Get.put(GetXHttp());
+  late Timer _timer;
+  final _time = 0;
+  var _isRunning = false;
+  final CoinController coinController = GetX.Get.put(CoinController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: GetX.Obx(() => Text(_getXController.data.string)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 100.0),
+          child: GetX.Obx(() => Text(GetX.Get.find<CoinController>()
+              .coinPirces
+              .value
+              .tradePrice
+              .toString())),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.record_voice_over_rounded),
-        onPressed: () async => await _getXController.getTradePrice(),
+        onPressed: () async => _clickButton(),
       ),
     );
   }
-}
 
-// Use http Package
-class GetXHttp extends GetX.GetxController {
-  GetX.RxString data = "".obs;
-  final String _url = "https://api.upbit.com/v1/ticker?markets=KRW-BTC";
-
-  Future<void> getTradePrice() async {
-    final http.Response res = await http.get(Uri.parse(_url));
-    final coinPrice = jsonDecode(res.body);
-    GetX.RxString result = "".obs;
-    if (res.statusCode == 200) {
-      for (var coinPirce in coinPrice) {
-        result = CoinPirceModel.fromJson(coinPirce).trade_price.toString().obs;
-      }
-      data = result;
-      print(data + "???");
-    } else {
-      data.close();
-    }
-    return;
-  }
-}
-
-class GetXHttpPage2 extends StatelessWidget {
-  final GetXHttp2 _getXController2 = GetX.Get.put(GetXHttp2());
-
-  GetXHttpPage2({super.key});
-
+  // 위젯이 dispose될 때 _timer를 cancel합니다.
+// ?. 옵셔널 체이닝을 통해 _timer가 null이 아닌 경우 cancel하도록 해줬습니다.
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('GetXHttp'),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.backspace),
-              onPressed: () {
-                // [ Navigator ]
-                GetX.Get.back();
-              })
-        ],
-      ),
-      body: Center(
-        child: GetX.Obx(() => Text(_getXController2.data.toString())),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.record_voice_over_rounded),
-        onPressed: () async => await _getXController2.connectServer(),
-      ),
-    );
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
-}
 
-// Built-in
-class GetXHttp2 extends GetX.GetConnect {
-  final GetX.RxList<dynamic> data = [].obs;
-  final String _url = "https://api.upbit.com/v1/market/all";
-
-  Future<void> connectServer() async {
-    if (data.isEmpty) {
-      GetX.Response<String> res = await get(_url);
-      final List result = json.decode(res.body!);
-      // ignore: unnecessary_statements
-      data + result;
+// 특정 버튼을 누르면 타이머를 시작합니다.
+  void _clickButton() {
+    _isRunning = !_isRunning;
+    if (_isRunning) {
+      _start();
     } else {
-      data.clear();
+      _pause();
     }
-    return;
+  }
+
+// Timer.periodic을 통해 setInterval과 같은 기능을 사용할 수 있습니다.
+// 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
+  void _start() {
+    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+      coinController.fetchPirces('KRW-BTC');
+      print(coinController.coinPirces.value.tradePrice);
+    });
+  }
+
+// 정지 버튼을 누르면 타이머를 정지합니다.
+  void _pause() {
+    _timer.cancel();
   }
 }

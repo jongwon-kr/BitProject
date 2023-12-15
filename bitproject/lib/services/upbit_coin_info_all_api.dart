@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coinInfo_model.dart';
 
+import 'api/upbit_url.dart';
+
 class UpbitCoinInfoAllApi {
-  static const String baseUrl = 'https://api.upbit.com';
+  static const String baseUrl = UpbitUrl.baseUrl;
 
   static Future<List<CoinInfoModel>> getCoinInfoAll() async {
     List<CoinInfoModel> coinInfoInstances = [];
-    String url = '$baseUrl/v1/market/all';
+    String url = baseUrl + UpbitUrl.coinList;
     Map<String, String> headers = {
       "accept": "application/json",
     };

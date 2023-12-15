@@ -29,7 +29,7 @@ class _NavigationState extends State<NavigationScreen> {
     const HomeScreen(),
     const HomeScreen(),
     GetXHttpPage(),
-    GetXHttpPage2(),
+    GetXHttpPage(),
   ];
 
   void onTap(int index) {

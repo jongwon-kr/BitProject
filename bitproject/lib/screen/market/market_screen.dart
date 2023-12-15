@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +10,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
+
+import '../../controller/coin_controller.dart';
 
 class MarketScreen extends StatefulWidget {
   static String id = "chat_screen";
@@ -46,6 +49,13 @@ class _MarketScreenState extends State<MarketScreen>
   ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금/
   @override
   bool get wantKeepAlive => true;
+
+  late Timer _timer;
+  final _time = 0;
+  final _isRunning = false;
+  final CoinController coinController = GetX.Get.put(CoinController());
+  List<String> tickers = [];
+
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -395,6 +405,10 @@ class _MarketScreenState extends State<MarketScreen>
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.record_voice_over_rounded),
+        onPressed: () async => setPrice(),
+      ),
     );
   }
 
@@ -420,6 +434,7 @@ class _MarketScreenState extends State<MarketScreen>
   }
 
   getCoinContainer(double height, double width, CoinInfoModel ci) {
+    tickers.add(ci.market);
     return Container(
       height: height * 0.07,
       decoration: const BoxDecoration(
@@ -471,10 +486,11 @@ class _MarketScreenState extends State<MarketScreen>
             ),
             SizedBox(
               width: width * 0.25,
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(""),
+                  GetX.Obx(() => Text(
+                      coinController.coinPirces.value.tradePrice.toString())),
                 ],
               ),
             ),
@@ -504,22 +520,16 @@ class _MarketScreenState extends State<MarketScreen>
       ),
     );
   }
-}
 
-// Use http Package
-class GetXHttp extends GetX.GetxController {
-  final GetX.RxList<dynamic> data = [].obs;
-  final String _url = "https://api.upbit.com/v1/market/all";
+  void _start(String ticker) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+      coinController.fetchPirces(ticker);
+    });
+  }
 
-  Future<void> connectServer() async {
-    if (data.isEmpty) {
-      final http.Response res = await http.get(Uri.parse(_url));
-      final List result = json.decode(res.body);
-      // ignore: unnecessary_statements
-      data + result;
-    } else {
-      data.clear();
+  void setPrice() {
+    for (String ticker in tickers) {
+      _start(ticker);
     }
-    return;
   }
 }
