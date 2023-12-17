@@ -66,7 +66,7 @@ class _GetXHttpPageState extends State<GetXHttpPage> {
     });
   }
 
-// 정지 버튼을 누르면 타이머를 정지합니다.
+// 정지 버튼을 누르면 타이머를 정지합니다.aa
   void _pause() {
     _timer.cancel();
   }
