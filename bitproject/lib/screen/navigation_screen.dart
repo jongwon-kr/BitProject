@@ -28,8 +28,8 @@ class _NavigationState extends State<NavigationScreen> {
     const MarketScreen(),
     const HomeScreen(),
     const HomeScreen(),
-    GetXHttpPage(),
-    GetXHttpPage(),
+    const GetXHttpPage(),
+    const GetXHttpPage(),
   ];
 
   void onTap(int index) {
@@ -64,7 +64,7 @@ class _NavigationState extends State<NavigationScreen> {
         physics: const NeverScrollableScrollPhysics(), // No sliding
       ),
       bottomNavigationBar: NavigationBar(
-        height: height * 0.07,
+        height: height * 0.08,
         indicatorColor: Colors.grey[200],
         backgroundColor: Colors.grey[50],
         onDestinationSelected: (int index) {
