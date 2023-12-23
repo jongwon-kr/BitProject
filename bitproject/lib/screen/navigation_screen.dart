@@ -61,7 +61,7 @@ class _NavigationState extends State<NavigationScreen> {
         onPageChanged: onPageChanged,
         // ignore: sort_child_properties_last
         children: screens,
-        physics: const NeverScrollableScrollPhysics(), // No sliding
+        physics: const NeverScrollableScrollPhysics(), // No sliding?
       ),
       bottomNavigationBar: NavigationBar(
         height: height * 0.08,
