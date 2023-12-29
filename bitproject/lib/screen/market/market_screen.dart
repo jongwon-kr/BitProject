@@ -436,7 +436,7 @@ class _MarketScreenState extends State<MarketScreen>
   getCoinContainer(double height, double width, CoinInfoModel ci) {
     tickers.add(ci.market);
     return Container(
-      height: height * 0.07,
+      height: height * 0.078,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -450,28 +450,41 @@ class _MarketScreenState extends State<MarketScreen>
           children: [
             SizedBox(
               width: width * 0.3,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 5),
-                      child: Icon(Icons.candlestick_chart),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(Icons.candlestick_chart),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: width * 0.2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: RichText(
+                                maxLines: 2,
+                                strutStyle: const StrutStyle(fontSize: 16.0),
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                text: TextSpan(
+                                  text: sortCoins[0]
+                                      ? ci.korean_name
+                                      : ci.english_name,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Row(
                         children: [
-                          Text(
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            sortCoins[0] ? ci.korean_name : ci.english_name,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.black),
-                          ),
                           Text(
                             "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
                             style: const TextStyle(
@@ -479,9 +492,9 @@ class _MarketScreenState extends State<MarketScreen>
                           ),
                         ],
                       ),
-                    )
-                  ],
-                ),
+                    ],
+                  )
+                ],
               ),
             ),
             SizedBox(
