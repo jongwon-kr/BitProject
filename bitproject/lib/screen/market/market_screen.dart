@@ -444,92 +444,89 @@ class _MarketScreenState extends State<MarketScreen>
           ),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 5, top: 7),
-        child: Row(
-          children: [
-            SizedBox(
-              width: width * 0.3,
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: Icon(Icons.candlestick_chart),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: width * 0.2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: RichText(
-                                maxLines: 2,
-                                strutStyle: const StrutStyle(fontSize: 16.0),
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: false,
-                                text: TextSpan(
-                                  text: sortCoins[0]
-                                      ? ci.korean_name
-                                      : ci.english_name,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Row(
+      child: Row(
+        children: [
+          SizedBox(
+            width: width * 0.3,
+            child: Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(right: 5),
+                  child: Icon(Icons.candlestick_chart),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: width * 0.2,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
-                            style: const TextStyle(
-                                fontSize: 10, color: Colors.grey),
-                          ),
+                          Flexible(
+                            child: RichText(
+                              maxLines: 2,
+                              strutStyle: const StrutStyle(fontSize: 16.0),
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              text: TextSpan(
+                                text: sortCoins[0]
+                                    ? ci.korean_name
+                                    : ci.english_name,
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.black),
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
+                          style:
+                              const TextStyle(fontSize: 10, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
             ),
-            SizedBox(
-              width: width * 0.25,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GetX.Obx(() => Text(
-                      coinController.coinPirces.value.tradePrice.toString())),
-                ],
-              ),
+          ),
+          SizedBox(
+            width: width * 0.25,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GetX.Obx(() => Text(
+                    coinController.coinPirces.value.tradePrice.toString())),
+              ],
             ),
-            SizedBox(
-              width: width * 0.2,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("-300%"),
-                ],
-              ),
+          ),
+          SizedBox(
+            width: width * 0.2,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("-300%"),
+              ],
             ),
-            SizedBox(
-              width: width * 0.25,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "504,201백만",
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ],
-              ),
+          ),
+          SizedBox(
+            width: width * 0.25,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "504,201백만",
+                  style: TextStyle(fontSize: 13),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
