@@ -419,7 +419,7 @@ class _MarketScreenState extends State<MarketScreen>
   ) {
     if (selectedMarkets[0]) {
       if (ci.market.contains("KRW-")) {
-        // 원화 마켓
+        // 원화
         return getCoinContainer(height, width, ci);
       }
     } else if (selectedMarkets[1]) {
