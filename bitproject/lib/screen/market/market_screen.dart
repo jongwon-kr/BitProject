@@ -435,6 +435,7 @@ class _MarketScreenState extends State<MarketScreen>
     return Container();
   }
 
+  // 코인 목록
   getCoinContainer(double height, double width, CoinInfoModel ci) {
     tickers.add(ci.market);
     return Container(
