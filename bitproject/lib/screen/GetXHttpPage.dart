@@ -6,6 +6,7 @@ import 'package:get/get.dart' as GetX;
 import '../controller/coin_controller.dart';
 
 // ignore: must_be_immutable
+// lesswidget으로 바꿔도 됨
 class GetXHttpPage extends StatefulWidget {
   const GetXHttpPage({super.key});
 
