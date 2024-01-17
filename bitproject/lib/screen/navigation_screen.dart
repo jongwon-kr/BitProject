@@ -15,7 +15,7 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationState extends State<NavigationScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int currentPageIndex = 0; // 0번이 market
-
+  // 01 18 부터 다시 시작
   final List<String> titles = <String>[
     '거래소',
     '코인정보',
