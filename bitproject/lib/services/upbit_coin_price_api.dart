@@ -26,4 +26,4 @@ class UpbitCoinPriceApi {
     return CoinPirceModel.fromJson(coinPrice);
   }
 }
-// 2.5재하고 바로 코딩하자
+// 2.5재하고 바로 코딩하제이
