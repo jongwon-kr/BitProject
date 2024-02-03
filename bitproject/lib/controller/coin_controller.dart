@@ -14,8 +14,6 @@ class CoinController extends GetxController with StateMixin<CoinPirceModel> {
       if (response.statusCode == 200) {
         final coinPriceModel = CoinPirceModel.fromJson(response.data[0]);
         coinPirces(coinPriceModel);
-        print(coinPriceModel.tradePrice);
-        print("object???????????????@?@?@?@?@?");
       }
     } on DioError catch (e) {}
   }

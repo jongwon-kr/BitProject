@@ -62,7 +62,7 @@ class _GetXHttpPageState extends State<GetXHttpPage> {
 // 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
   void _start() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      coinController.fetchPirces('KRW-BTC');
+      coinController.fetchPirces('KRW-BCH');
       print(coinController.coinPirces.value.tradePrice);
     });
   }

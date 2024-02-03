@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
+import 'package:provider/provider.dart';
 
 import '../../controller/coin_controller.dart';
 
@@ -510,10 +512,39 @@ class _MarketScreenState extends State<MarketScreen>
           ),
           SizedBox(
             width: width * 0.2,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("-300%"),
+                Column(
+                  children: [
+                    GetX.Obx(
+                      () => coinController.coinPirces.value.signedChangeRate
+                              .toString()
+                              .contains('-')
+                          ? Text(
+                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 13))
+                          : Text(
+                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 13),
+                            ),
+                    ),
+                    GetX.Obx(
+                      () => coinController.coinPirces.value.signedChangeRate
+                              .toString()
+                              .contains('-')
+                          ? Text(
+                              coinController.coinPirces.value.acctradePrice
+                                  .toString(),
+                            )
+                          : Text(
+                              coinController.coinPirces.value.change.toString(),
+                            ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
