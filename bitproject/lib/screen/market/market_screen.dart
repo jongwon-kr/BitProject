@@ -517,30 +517,34 @@ class _MarketScreenState extends State<MarketScreen>
               children: [
                 Column(
                   children: [
+                    // 여기 고쳐야함
                     GetX.Obx(
                       () => coinController.coinPirces.value.signedChangeRate
                               .toString()
                               .contains('-')
                           ? Text(
-                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
+                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(2)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13))
                           : Text(
-                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
+                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(2)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13),
                             ),
                     ),
                     GetX.Obx(
-                      () => coinController.coinPirces.value.signedChangeRate
+                      () => coinController.coinPirces.value.signedChangePrice
                               .toString()
                               .contains('-')
                           ? Text(
-                              coinController.coinPirces.value.acctradePrice
-                                  .toString(),
+                              coinController.coinPirces.value.signedChangePrice
+                                  .toString()
+                                  .substring(4),
                             )
                           : Text(
-                              coinController.coinPirces.value.change.toString(),
+                              coinController.coinPirces.value.signedChangePrice
+                                  .toString()
+                                  .substring(4),
                             ),
                     ),
                   ],
