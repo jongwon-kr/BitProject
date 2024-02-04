@@ -59,6 +59,7 @@ class _MarketScreenState extends State<MarketScreen>
   List<String> tickers = [];
 
   void getCurrentUser() async {
+    print(coinController.coinPirces.value.acctradePrice24h);
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -516,6 +517,7 @@ class _MarketScreenState extends State<MarketScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // 여기 고쳐야함
                     GetX.Obx(
@@ -523,29 +525,27 @@ class _MarketScreenState extends State<MarketScreen>
                               .toString()
                               .contains('-')
                           ? Text(
-                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(2)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 13))
+                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
+                              style: TextStyle(
+                                  color: Colors.blue[500], fontSize: 13))
                           : Text(
-                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(2)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(4)}'}'}%',
+                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13),
                             ),
                     ),
                     GetX.Obx(
-                      () => coinController.coinPirces.value.signedChangePrice
+                      () => coinController.coinPirces.value.signedChangeRate
                               .toString()
                               .contains('-')
                           ? Text(
-                              coinController.coinPirces.value.signedChangePrice
-                                  .toString()
-                                  .substring(4),
-                            )
+                              '-${coinController.coinPirces.value.changePrice.toString().replaceAll('.0', '')}',
+                              style: TextStyle(
+                                  color: Colors.blue[500], fontSize: 13))
                           : Text(
-                              coinController.coinPirces.value.signedChangePrice
-                                  .toString()
-                                  .substring(4),
-                            ),
+                              '+${coinController.coinPirces.value.changePrice.toString().replaceAll('.0', '')}',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 13)),
                     ),
                   ],
                 )
@@ -554,12 +554,11 @@ class _MarketScreenState extends State<MarketScreen>
           ),
           SizedBox(
             width: width * 0.25,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "504,201백만",
-                  style: TextStyle(fontSize: 13),
+                GetX.Obx(
+                  () => const Text("0.0"),
                 ),
               ],
             ),
