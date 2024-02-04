@@ -558,6 +558,7 @@ class _MarketScreenState extends State<MarketScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // 거래대금
                 GetX.Obx(
                   () => const Text("0.0"),
                 ),
