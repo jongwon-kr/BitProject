@@ -560,7 +560,9 @@ class _MarketScreenState extends State<MarketScreen>
               children: [
                 // 거래대금
                 GetX.Obx(
-                  () => const Text("0.0"),
+                  () => Text(
+                    coinController.coinPirces.value.acctradePrice24h.toString(),
+                  ),
                 ),
               ],
             ),
