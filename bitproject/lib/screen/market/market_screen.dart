@@ -518,6 +518,7 @@ class _MarketScreenState extends State<MarketScreen>
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // 여기 고쳐야함
                     GetX.Obx(
