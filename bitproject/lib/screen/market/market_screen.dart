@@ -53,13 +53,10 @@ class _MarketScreenState extends State<MarketScreen>
   bool get wantKeepAlive => true;
 
   late Timer _timer;
-  final _time = 0;
   final _isRunning = false;
-  final CoinController coinController = GetX.Get.put(CoinController());
   List<String> tickers = [];
 
   void getCurrentUser() async {
-    print(coinController.coinPirces.value.acctradePrice24h);
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -408,10 +405,6 @@ class _MarketScreenState extends State<MarketScreen>
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.record_voice_over_rounded),
-        onPressed: () async => setPrice(),
-      ),
     );
   }
 
@@ -440,7 +433,8 @@ class _MarketScreenState extends State<MarketScreen>
 
   // 코인 목록
   getCoinContainer(double height, double width, CoinInfoModel ci) {
-    tickers.add(ci.market);
+    CoinController coinController = GetX.Get.put(CoinController());
+    _start(ci.market, coinController);
     return Container(
       height: height * 0.078,
       decoration: const BoxDecoration(
@@ -572,15 +566,10 @@ class _MarketScreenState extends State<MarketScreen>
     );
   }
 
-  void _start(String ticker) {
-    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      coinController.fetchPirces(ticker);
-    });
-  }
-
-  void setPrice() {
-    for (String ticker in tickers) {
-      _start(ticker);
-    }
+// Timer.periodic을 통해 setInterval과 같은 기능을 사용할 수 있습니다.
+// 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
+  void _start(String ticker, CoinController coinController) {
+    coinController.fetchPirces(ticker);
+    print(coinController.coinPirces.value.acctradePrice24h);
   }
 }

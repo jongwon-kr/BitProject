@@ -16,7 +16,6 @@ class GetXHttpPage extends StatefulWidget {
 
 class _GetXHttpPageState extends State<GetXHttpPage> {
   late Timer _timer;
-  final _time = 0;
   var _isRunning = false;
   final CoinController coinController = GetX.Get.put(CoinController());
 
@@ -62,7 +61,7 @@ class _GetXHttpPageState extends State<GetXHttpPage> {
 // 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
   void _start() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      coinController.fetchPirces('KRW-BCH');
+      coinController.fetchPirces('KRW-SUI');
       print(coinController.coinPirces.value.tradePrice);
     });
   }
