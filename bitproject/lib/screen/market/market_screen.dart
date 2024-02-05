@@ -432,9 +432,9 @@ class _MarketScreenState extends State<MarketScreen>
   }
 
   // 코인 목록
-  getCoinContainer(double height, double width, CoinInfoModel ci) {
+  getCoinContainer(double height, double width, CoinInfoModel ci) async {
     CoinController coinController = GetX.Get.put(CoinController());
-    _start(ci.market, coinController);
+    coinController.fetchPirces(ci.market);
     return Container(
       height: height * 0.078,
       decoration: const BoxDecoration(
@@ -570,6 +570,7 @@ class _MarketScreenState extends State<MarketScreen>
 // 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
   void _start(String ticker, CoinController coinController) {
     coinController.fetchPirces(ticker);
-    print(coinController.coinPirces.value.acctradePrice24h);
+    print(
+        '$ticker현재가격${coinController.coinPirces.value.signedChangeRate.toString()}');
   }
 }

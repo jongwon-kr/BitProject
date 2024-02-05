@@ -17,7 +17,7 @@ class GetXHttpPage extends StatefulWidget {
 class _GetXHttpPageState extends State<GetXHttpPage> {
   late Timer _timer;
   var _isRunning = false;
-  final CoinController coinController = GetX.Get.put(CoinController());
+  CoinController coinController = GetX.Get.put(CoinController());
 
   @override
   Widget build(BuildContext context) {

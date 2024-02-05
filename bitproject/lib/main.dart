@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:medicalapp/screen/navigation_screen.dart';
-import 'package:medicalapp/widget/stock_controller.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Get.put(StockController());
   runApp(const MainApp());
 }
 

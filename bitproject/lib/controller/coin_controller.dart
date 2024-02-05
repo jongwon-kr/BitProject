@@ -16,6 +16,7 @@ class CoinController extends GetxController with StateMixin<CoinPirceModel> {
         final coinPriceModel = CoinPirceModel.fromJson(response.data[0]);
         coinPirces(coinPriceModel);
       }
-    } on DioError catch (e) {}
+      // ignore: deprecated_member_use
+    } on DioError {}
   }
 }
