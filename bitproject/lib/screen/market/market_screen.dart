@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
-import 'package:provider/provider.dart';
 
 import '../../controller/coin_controller.dart';
 
@@ -522,7 +521,7 @@ class _MarketScreenState extends State<MarketScreen>
                           ? Text(
                               '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
                               style: TextStyle(
-                                  color: Colors.blue[500], fontSize: 13))
+                                  color: Colors.blue[600], fontSize: 13))
                           : Text(
                               '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
                               style: const TextStyle(
@@ -536,7 +535,7 @@ class _MarketScreenState extends State<MarketScreen>
                           ? Text(
                               '-${coinController.coinPirces.value.changePrice.toString().replaceAll('.0', '')}',
                               style: TextStyle(
-                                  color: Colors.blue[500], fontSize: 13))
+                                  color: Colors.blue[600], fontSize: 13))
                           : Text(
                               '+${coinController.coinPirces.value.changePrice.toString().replaceAll('.0', '')}',
                               style: const TextStyle(
