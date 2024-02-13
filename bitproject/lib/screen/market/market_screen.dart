@@ -513,7 +513,7 @@ class _MarketScreenState extends State<MarketScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // 여기 고쳐야함..
+                    // 여기 고쳐야함.. 등락 퍼센트
                     GetX.Obx(
                       () => coinController.coinPirces.value.signedChangeRate
                               .toString()
