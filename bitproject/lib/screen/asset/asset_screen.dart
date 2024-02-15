@@ -68,7 +68,9 @@ class _AssetScreenState extends State<AssetScreen> {
       body: Container(
         color: Colors.white,
         child: ListView(
-          children: const [Text("data")],
+          children: const [
+            Text("data"),
+          ],
         ),
       ),
     );

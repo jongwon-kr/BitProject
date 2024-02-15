@@ -484,8 +484,10 @@ class _MarketScreenState extends State<MarketScreen>
                       children: [
                         Text(
                           "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
-                          style:
-                              const TextStyle(fontSize: 10, color: Colors.grey),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),
@@ -499,8 +501,11 @@ class _MarketScreenState extends State<MarketScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GetX.Obx(() => Text(
-                    coinController.coinPirces.value.tradePrice.toString())),
+                GetX.Obx(
+                  () => Text(
+                    coinController.coinPirces.value.tradePrice.toString(),
+                  ),
+                ),
               ],
             ),
           ),
