@@ -25,6 +25,8 @@ class MarketScreen extends StatefulWidget {
 
 class _MarketScreenState extends State<MarketScreen>
     with AutomaticKeepAliveClientMixin {
+  late Timer _timer;
+  CoinController coinController = GetX.Get.put(CoinController());
   final messageTextController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -51,7 +53,6 @@ class _MarketScreenState extends State<MarketScreen>
   @override
   bool get wantKeepAlive => true;
 
-  late Timer _timer;
   final _isRunning = false;
   List<String> tickers = [];
 
@@ -70,6 +71,7 @@ class _MarketScreenState extends State<MarketScreen>
   @override
   void initState() {
     getCurrentUser();
+    fetchData();
     super.initState();
   }
 
@@ -431,9 +433,7 @@ class _MarketScreenState extends State<MarketScreen>
   }
 
   // 코인 목록
-  getCoinContainer(double height, double width, CoinInfoModel ci) async {
-    CoinController coinController = GetX.Get.put(CoinController());
-    coinController.fetchPirces(ci.market);
+  getCoinContainer(double height, double width, CoinInfoModel ci) {
     return Container(
       height: height * 0.078,
       decoration: const BoxDecoration(
@@ -570,11 +570,11 @@ class _MarketScreenState extends State<MarketScreen>
     );
   }
 
-// Timer.periodic을 통해 setInterval과 같은 기능을 사용할 수 있습니다.
-// 여기서는 1초마다 _time을 1씩 증가시키도록 했습니다.
-  void _start(String ticker, CoinController coinController) {
-    coinController.fetchPirces(ticker);
-    print(
-        '$ticker현재가격${coinController.coinPirces.value.signedChangeRate.toString()}');
+  void fetchData() {
+    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+      coinController.fetchPirces('KRW-BTC');
+      print(coinController.coinPirces.value.tradePrice);
+      print("${coinController.coinPirces.value.signedChangeRate}??");
+    });
   }
 }
