@@ -572,7 +572,7 @@ class _MarketScreenState extends State<MarketScreen>
 
   void fetchData() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      coinController.fetchPirces('KRW-BTC');
+      coinController.fetchPirces('KRW-ETH');
       print(coinController.coinPirces.value.tradePrice);
       print("${coinController.coinPirces.value.signedChangeRate}??");
     });
