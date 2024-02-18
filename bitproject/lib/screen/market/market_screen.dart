@@ -524,11 +524,11 @@ class _MarketScreenState extends State<MarketScreen>
                               .toString()
                               .contains('-')
                           ? Text(
-                              '${'-${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
+                              '${'-${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(2)}'}%',
                               style: TextStyle(
                                   color: Colors.blue[600], fontSize: 13))
                           : Text(
-                              '${'+${'${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(3)[1]}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).substring(5)}'}'}%',
+                              '${'+${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(2)}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13),
                             ),
