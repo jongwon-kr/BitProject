@@ -524,11 +524,11 @@ class _MarketScreenState extends State<MarketScreen>
                               .toString()
                               .contains('-')
                           ? Text(
-                              '${'-${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(2)}'}%',
+                              '${'-${"${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                               style: TextStyle(
                                   color: Colors.blue[600], fontSize: 13))
                           : Text(
-                              '${'+${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(2)}'}%',
+                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13),
                             ),
@@ -574,7 +574,7 @@ class _MarketScreenState extends State<MarketScreen>
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       coinController.fetchPirces('KRW-SUI');
       print(coinController.coinPirces.value.tradePrice);
-      print("${coinController.coinPirces.value.signedChangeRate}??");
+      print("${coinController.coinPirces.value.signedChangeRate}");
     });
   }
 }
