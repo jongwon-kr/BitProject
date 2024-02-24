@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
@@ -25,6 +26,7 @@ class MarketScreen extends StatefulWidget {
 
 class _MarketScreenState extends State<MarketScreen>
     with AutomaticKeepAliveClientMixin {
+  var f = NumberFormat('###,###,###,###');
   late Timer _timer;
   CoinController coinController = GetX.Get.put(CoinController());
   final messageTextController = TextEditingController();
@@ -559,7 +561,7 @@ class _MarketScreenState extends State<MarketScreen>
                 // 거래대금
                 GetX.Obx(
                   () => Text(
-                    "${coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)}백만",
+                    "${f.format(int.parse(coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
                   ),
                 ),
               ],
