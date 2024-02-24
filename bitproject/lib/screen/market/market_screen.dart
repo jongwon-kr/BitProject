@@ -559,7 +559,7 @@ class _MarketScreenState extends State<MarketScreen>
                 // 거래대금
                 GetX.Obx(
                   () => Text(
-                    coinController.coinPirces.value.acctradePrice24h.toString(),
+                    "${coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)}백만",
                   ),
                 ),
               ],
@@ -575,6 +575,17 @@ class _MarketScreenState extends State<MarketScreen>
       coinController.fetchPirces('KRW-SUI');
       print(coinController.coinPirces.value.tradePrice);
       print("${coinController.coinPirces.value.signedChangeRate}");
+      print(
+        coinController.coinPirces.value.acctradePrice24h
+            .toStringAsFixed(0)
+            .substring(
+              0,
+              coinController.coinPirces.value.acctradePrice24h
+                      .toStringAsFixed(0)
+                      .length -
+                  6,
+            ),
+      );
     });
   }
 }
