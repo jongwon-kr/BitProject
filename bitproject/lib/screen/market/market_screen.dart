@@ -558,7 +558,7 @@ class _MarketScreenState extends State<MarketScreen>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 거래대금
+                // 거래대금 백만
                 GetX.Obx(
                   () => Text(
                     "${f.format(int.parse(coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
