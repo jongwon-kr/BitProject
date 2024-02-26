@@ -520,33 +520,17 @@ class _MarketScreenState extends State<MarketScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // 여기 고쳐야함.. 등락 퍼센트
-                    /*
-                                        GetX.Obx(
-                      () => coinController.coinPirces.value.signedChangeRate
-                              .toString()
-                              .contains('-')
-                          ? Text(
-                              '${'-${"${coinController.coinPirces.value.signedChangeRate.toString().split(".")[0].split('-')[1].replaceFirst(RegExp(r'0'), '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}".replaceFirst(RegExp(r'00'), '0')}'}%',
-                              style: TextStyle(
-                                  color: Colors.blue[600], fontSize: 13))
-                          : Text(
-                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split(".")[0].split('-')[1].replaceFirst(RegExp(r'0'), '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}".replaceFirst(RegExp(r'00'), '0')}'}%',
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 13),
-                            ),
-                    ),
-                    */
+                    // 999퍼센트까지 표시 가능
                     GetX.Obx(
                       () => coinController.coinPirces.value.signedChangeRate
                               .toString()
                               .contains('-')
                           ? Text(
-                              '${'-${"${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
+                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('-', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                               style: TextStyle(
                                   color: Colors.blue[600], fontSize: 13))
                           : Text(
-                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceAll("00", "0")}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
+                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('+', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 13),
                             ),
@@ -577,7 +561,7 @@ class _MarketScreenState extends State<MarketScreen>
 
   void fetchData() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      coinController.fetchPirces('KRW-SUI');
+      coinController.fetchPirces('KRW-VET');
       print(coinController.coinPirces.value.tradePrice);
       print("${coinController.coinPirces.value.signedChangeRate}");
     });
