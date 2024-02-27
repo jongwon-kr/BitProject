@@ -6,14 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart' as GetX;
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 import 'package:medicalapp/models/coinInfo_model.dart';
+import 'package:medicalapp/screen/market/coin_price_info.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
-
-import '../../controller/coin_controller.dart';
 
 class MarketScreen extends StatefulWidget {
   static String id = "chat_screen";
@@ -26,9 +22,6 @@ class MarketScreen extends StatefulWidget {
 
 class _MarketScreenState extends State<MarketScreen>
     with AutomaticKeepAliveClientMixin {
-  var f = NumberFormat('###,###,###,###');
-  late Timer _timer;
-  CoinController coinController = GetX.Get.put(CoinController());
   final messageTextController = TextEditingController();
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -73,7 +66,6 @@ class _MarketScreenState extends State<MarketScreen>
   @override
   void initState() {
     getCurrentUser();
-    fetchData();
     super.initState();
   }
 
@@ -436,134 +428,6 @@ class _MarketScreenState extends State<MarketScreen>
 
   // 코인 목록
   getCoinContainer(double height, double width, CoinInfoModel ci) {
-    return Container(
-      height: height * 0.078,
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Color.fromRGBO(224, 224, 224, 1),
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: width * 0.3,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 5),
-                  child: Icon(Icons.candlestick_chart),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: width * 0.2,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: RichText(
-                              maxLines: 2,
-                              strutStyle: const StrutStyle(fontSize: 16.0),
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                              text: TextSpan(
-                                text: sortCoins[0]
-                                    ? ci.korean_name
-                                    : ci.english_name,
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.black),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "${ci.market.split("-")[1]}/${ci.market.split("-")[0]}",
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width * 0.25,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GetX.Obx(
-                  () => Text(
-                    coinController.coinPirces.value.tradePrice.toString(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width * 0.2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // 999퍼센트까지 표시 가능
-                    GetX.Obx(
-                      () => coinController.coinPirces.value.signedChangeRate
-                              .toString()
-                              .contains('-')
-                          ? Text(
-                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('-', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
-                              style: TextStyle(
-                                  color: Colors.blue[600], fontSize: 13))
-                          : Text(
-                              '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('+', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 13),
-                            ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            width: width * 0.25,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // 거래대금
-                GetX.Obx(
-                  () => Text(
-                    "${f.format(int.parse(coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void fetchData() {
-    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
-      coinController.fetchPirces('KRW-VET');
-      print(coinController.coinPirces.value.tradePrice);
-      print("${coinController.coinPirces.value.signedChangeRate}");
-    });
+    return CoinPriceContainer(height, width, ci);
   }
 }
