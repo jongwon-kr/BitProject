@@ -10,7 +10,7 @@ class ApiService {
   );
 
   // dio instance
-  final Dio _dio = Dio(_options)..interceptors.add(LogInterceptor());
+  final Dio _dio = Dio(_options);
 
   // GET request
   Future<Response> get(

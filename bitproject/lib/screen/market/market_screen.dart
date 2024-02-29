@@ -49,7 +49,7 @@ class _MarketScreenState extends State<MarketScreen>
   bool get wantKeepAlive => true;
 
   final _isRunning = false;
-  List<String> tickers = [];
+  static List<String> tickers = [];
 
   void getCurrentUser() async {
     try {
@@ -381,16 +381,20 @@ class _MarketScreenState extends State<MarketScreen>
                     builder: (BuildContext context,
                         AsyncSnapshot<dynamic> snapshot) {
                       if (!snapshot.hasData) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasData) {
-                        return Column(
+                        return const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            for (CoinInfoModel ci in snapshot.data)
-                              getCoinContainer(height, width, ci, snapshot.data)
+                            CircularProgressIndicator(),
                           ],
                         );
                       } else {
-                        return Container();
+                        return Column(
+                          children: [
+                            for (CoinInfoModel ci in snapshot.data)
+                              getCoinContainer(height, width, ci)
+                          ],
+                        );
                       }
                     },
                   )
@@ -404,20 +408,20 @@ class _MarketScreenState extends State<MarketScreen>
   }
 
   // 코인 목록
-  getCoinContainer(double height, double width, CoinInfoModel ci,
-      Future<List<CoinInfoModel>> coinInfos) async {
-    for (CoinInfoModel cm in await coinInfos) {
-      tickers.add(cm.market);
-    }
+  getCoinContainer(
+    double height,
+    double width,
+    CoinInfoModel ci,
+  ) {
     if (selectedMarkets[0]) {
       if (ci.market.contains("KRW-")) {
         // 원화
-        return CoinPriceContainer(height, width, ci, tickers);
+        return CoinPriceContainer(height, width, ci);
       }
     } else if (selectedMarkets[1]) {
       // btc마켓
       if (ci.market.contains("BTC-")) {
-        return CoinPriceContainer(height, width, ci, tickers);
+        return CoinPriceContainer(height, width, ci);
       }
       // 관심목록
     } else if (selectedMarkets[2]) {

@@ -5,26 +5,33 @@ import 'package:get/get.dart' as GetX;
 import 'package:intl/intl.dart';
 import 'package:medicalapp/controller/coin_controller.dart';
 import 'package:medicalapp/models/coinInfo_model.dart';
+import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
 
-Container CoinPriceContainer(
-    double height, double width, CoinInfoModel ci, List<String> tickers) {
+Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
+  late Future<List<CoinInfoModel>> coinInfos =
+      UpbitCoinInfoAllApi.getCoinInfoAll();
+  List<String> tickers = [];
+
   var f = NumberFormat('###,###,###,###');
   late Timer timer;
   CoinController coinController =
-      GetX.Get.find<CoinController>(); // 이 부분을 수정합니다.
+      GetX.Get.put(CoinController()); // 이 부분을 수정합니다.
   final List<bool> sortCoins = <bool>[
     true,
     true,
     true,
     true
   ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금
-  print(ci.market);
-
-  void fetchData() {
+  void fetchData() async {
+    for (CoinInfoModel ticker in await coinInfos) {
+      tickers.add(ticker.market);
+      print(ticker);
+    }
     timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       coinController.fetchPirces(tickers);
-      print(coinController.coinPirces.value.tradePrice);
-      print("${coinController.coinPirces.value.signedChangeRate}");
+      for (CoinInfoModel cm in coinController.coinPriceList) {
+        print("????????");
+      }
     });
   }
 
