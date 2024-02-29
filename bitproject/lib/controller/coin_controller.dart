@@ -6,17 +6,21 @@ import '../models/coin_price_model.dart';
 
 class CoinController extends GetxController with StateMixin<CoinPirceModel> {
   final TradePriceApi tradePriceApi = TradePriceApi();
+  late RxList<Rx<CoinPirceModel>> coinPriceList;
   Rx<CoinPirceModel> coinPirces =
       CoinPirceModel("", "", 0.0, 0.0, 0.0, 0.0).obs;
 
-  void fetchPirces(String ticker) async {
-    try {
-      final response = await tradePriceApi.getTradePrice(ticker);
-      if (response.statusCode == 200) {
-        final coinPriceModel = CoinPirceModel.fromJson(response.data[0]);
-        coinPirces(coinPriceModel);
-      }
-      // ignore: deprecated_member_use
-    } on DioError {}
+  void fetchPirces(List<String> tickers) async {
+    for (String ticker in tickers) {
+      try {
+        final response = await tradePriceApi.getTradePrice(ticker);
+        if (response.statusCode == 200) {
+          final coinPriceModel = CoinPirceModel.fromJson(response.data[0]);
+          coinPirces(coinPriceModel);
+          coinPriceList.add(coinPirces);
+        }
+        // ignore: deprecated_member_use
+      } on DioError {}
+    }
   }
 }

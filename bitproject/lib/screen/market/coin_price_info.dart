@@ -6,20 +6,23 @@ import 'package:intl/intl.dart';
 import 'package:medicalapp/controller/coin_controller.dart';
 import 'package:medicalapp/models/coinInfo_model.dart';
 
-Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
+Container CoinPriceContainer(
+    double height, double width, CoinInfoModel ci, List<String> tickers) {
   var f = NumberFormat('###,###,###,###');
   late Timer timer;
-  CoinController coinController = GetX.Get.put(CoinController());
+  CoinController coinController =
+      GetX.Get.find<CoinController>(); // 이 부분을 수정합니다.
   final List<bool> sortCoins = <bool>[
     true,
     true,
     true,
     true
   ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금
+  print(ci.market);
 
   void fetchData() {
     timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      coinController.fetchPirces("KRW-BTC");
+      coinController.fetchPirces(tickers);
       print(coinController.coinPirces.value.tradePrice);
       print("${coinController.coinPirces.value.signedChangeRate}");
     });
