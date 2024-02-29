@@ -386,7 +386,7 @@ class _MarketScreenState extends State<MarketScreen>
                         return Column(
                           children: [
                             for (CoinInfoModel ci in snapshot.data)
-                              getCurrentCoins(height, width, ci)
+                              getCoinContainer(height, width, ci)
                           ],
                         );
                       } else {
@@ -401,29 +401,6 @@ class _MarketScreenState extends State<MarketScreen>
         ),
       ),
     );
-  }
-
-  Container getCurrentCoins(
-    double height,
-    double width,
-    CoinInfoModel ci,
-  ) {
-    if (selectedMarkets[0]) {
-      if (ci.market.contains("KRW-")) {
-        // 원화
-        return getCoinContainer(height, width, ci);
-      }
-    } else if (selectedMarkets[1]) {
-      // btc마켓
-      if (ci.market.contains("BTC-")) {
-        return getCoinContainer(height, width, ci);
-      }
-    } else if (selectedMarkets[2]) {
-      return Container();
-    } else {
-      return Container();
-    }
-    return Container();
   }
 
   // 코인 목록
