@@ -7,7 +7,8 @@ import 'package:medicalapp/controller/coin_controller.dart';
 import 'package:medicalapp/models/coinInfo_model.dart';
 import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
 
-Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
+Container CoinPriceContainer(
+    double height, double width, CoinInfoModel ci, List<bool> selectedMarkets) {
   late Future<List<CoinInfoModel>> coinInfos =
       UpbitCoinInfoAllApi.getCoinInfoAll();
   List<String> tickers = [];
@@ -24,7 +25,20 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
   ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금
   void fetchData() async {
     for (CoinInfoModel ticker in await coinInfos) {
-      tickers.add(ticker.market);
+      if (selectedMarkets[0]) {
+        // KRW
+        if (ticker.market.contains("KRW-")) {
+          tickers.add(ticker.market);
+        }
+      } else if (selectedMarkets[1]) {
+        // BTC
+        if (ticker.market.contains("BTC-")) {
+          tickers.add(ticker.market);
+        }
+      } else if (selectedMarkets[2]) {
+        // 관심목록
+        tickers.add(ticker.market);
+      }
     }
     timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       coinController.fetchPirces(tickers);
@@ -68,21 +82,24 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
                                 .toString(),
                           ),
                         ),
-                        // Flexible(
-                        //   child: RichText(
-                        //     maxLines: 2,
-                        //     strutStyle: const StrutStyle(fontSize: 16.0),
-                        //     overflow: TextOverflow.ellipsis,
-                        //     softWrap: false,
-                        //     text: TextSpan(
-                        //       text: sortCoins[0]
-                        //           ? ci.korean_name
-                        //           : ci.english_name,
-                        //       style: const TextStyle(
-                        //           fontSize: 14, color: Colors.black),
-                        //     ),
-                        //   ),
-                        // )
+                        Flexible(
+                          child: RichText(
+                            maxLines: 2,
+                            strutStyle: const StrutStyle(fontSize: 16.0),
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            text: TextSpan(
+                              text: sortCoins[0] &&
+                                      coinController.coinPirces.value.market
+                                          .toString()
+                                          .contains(ci.market)
+                                  ? ci.korean_name
+                                  : ci.english_name,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),

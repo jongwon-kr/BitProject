@@ -416,12 +416,12 @@ class _MarketScreenState extends State<MarketScreen>
     if (selectedMarkets[0]) {
       if (ci.market.contains("KRW-")) {
         // 원화
-        return CoinPriceContainer(height, width, ci);
+        return CoinPriceContainer(height, width, ci, selectedMarkets);
       }
     } else if (selectedMarkets[1]) {
       // btc마켓
       if (ci.market.contains("BTC-")) {
-        return CoinPriceContainer(height, width, ci);
+        return CoinPriceContainer(height, width, ci, selectedMarkets);
       }
       // 관심목록
     } else if (selectedMarkets[2]) {
