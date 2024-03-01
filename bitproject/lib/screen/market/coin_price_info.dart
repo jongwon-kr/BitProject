@@ -25,13 +25,10 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
   void fetchData() async {
     for (CoinInfoModel ticker in await coinInfos) {
       tickers.add(ticker.market);
-      print(ticker);
     }
     timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       coinController.fetchPirces(tickers);
-      for (CoinInfoModel cm in coinController.coinPriceList) {
-        print("????????");
-      }
+      for (CoinInfoModel cm in coinController.coinPriceList) {}
     });
   }
 
@@ -65,21 +62,27 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: RichText(
-                            maxLines: 2,
-                            strutStyle: const StrutStyle(fontSize: 16.0),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            text: TextSpan(
-                              text: sortCoins[0]
-                                  ? ci.korean_name
-                                  : ci.english_name,
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black),
-                            ),
+                        GetX.Obx(
+                          () => Text(
+                            coinController.coinPriceList.first.value.market
+                                .toString(),
                           ),
-                        )
+                        ),
+                        // Flexible(
+                        //   child: RichText(
+                        //     maxLines: 2,
+                        //     strutStyle: const StrutStyle(fontSize: 16.0),
+                        //     overflow: TextOverflow.ellipsis,
+                        //     softWrap: false,
+                        //     text: TextSpan(
+                        //       text: sortCoins[0]
+                        //           ? ci.korean_name
+                        //           : ci.english_name,
+                        //       style: const TextStyle(
+                        //           fontSize: 14, color: Colors.black),
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -106,7 +109,8 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
             children: [
               GetX.Obx(
                 () => Text(
-                  coinController.coinPirces.value.tradePrice.toString(),
+                  coinController.coinPriceList.first.value.tradePrice
+                      .toString(),
                 ),
               ),
             ],
@@ -123,15 +127,16 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
                 children: [
                   // 999퍼센트까지 표시 가능
                   GetX.Obx(
-                    () => coinController.coinPirces.value.signedChangeRate
+                    () => coinController
+                            .coinPriceList.first.value.signedChangeRate
                             .toString()
                             .contains('-')
                         ? Text(
-                            '${'-${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('-', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
+                            '${'-${"${coinController.coinPriceList.first.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('-', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                             style: TextStyle(
                                 color: Colors.blue[600], fontSize: 13))
                         : Text(
-                            '${'+${"${coinController.coinPirces.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('+', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
+                            '${'+${"${coinController.coinPriceList.first.value.signedChangeRate.toString().split('.')[0].replaceFirst('0', '').replaceAll('+', '') + coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(0, 2).replaceFirst(RegExp(r'00'), '0')}.${coinController.coinPirces.value.signedChangeRate.toStringAsFixed(4).split(".")[1].substring(2, 4)}"}'}%',
                             style: const TextStyle(
                                 color: Colors.red, fontSize: 13),
                           ),
@@ -149,7 +154,7 @@ Container CoinPriceContainer(double height, double width, CoinInfoModel ci) {
               // 거래대금
               GetX.Obx(
                 () => Text(
-                  "${f.format(int.parse(coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
+                  "${f.format(int.parse(coinController.coinPriceList.first.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
                 ),
               ),
             ],
