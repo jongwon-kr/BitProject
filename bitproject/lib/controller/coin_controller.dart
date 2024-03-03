@@ -23,5 +23,10 @@ class CoinController extends GetxController with StateMixin<CoinPirceModel> {
         // ignore: deprecated_member_use
       } on DioError {}
     }
+    int i = 0;
+    for (Rx<CoinPirceModel> cm in coinPriceList) {
+      i++;
+      print("${i.toString() + cm.value.market}market${coinPriceList.length}");
+    }
   }
 }
