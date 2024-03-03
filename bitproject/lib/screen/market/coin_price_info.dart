@@ -13,7 +13,7 @@ Container CoinPriceContainer(
       UpbitCoinInfoAllApi.getCoinInfoAll();
   List<String> tickers = [];
 
-  var f = NumberFormat('###,###,###,###');
+  var f = NumberFormat('###,###,###,###,###,###');
   late Timer timer;
   CoinController coinController =
       GetX.Get.put(CoinController()); // 이 부분을 수정합니다.
@@ -167,8 +167,23 @@ Container CoinPriceContainer(
             children: [
               // 거래대금
               GetX.Obx(
-                () => Text(
-                  "${f.format(int.parse(coinController.coinPriceList.first.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만",
+                () => SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Text(
+                        selectedMarkets[0] &&
+                                coinController.coinPirces.value.market
+                                    .contains("KRW")
+                            ? "${f.format(int.parse(coinController.coinPriceList.first.value.acctradePrice24h.toStringAsFixed(0).substring(0, coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(0).length - 6)))}백만"
+                            : selectedMarkets[1] &&
+                                    coinController.coinPirces.value.market
+                                        .contains("BTC")
+                                ? "${coinController.coinPirces.value.acctradePrice24h.toStringAsFixed(3)}BTC"
+                                : "?",
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
