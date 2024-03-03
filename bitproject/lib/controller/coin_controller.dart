@@ -14,7 +14,7 @@ class CoinController extends GetxController with StateMixin<CoinPirceModel> {
   void fetchPirces(List<String> tickers) async {
     for (String ticker in tickers) {
       try {
-        final response = await tradePriceApi.getTradePrice(ticker);
+        final response = await tradePriceApi.getTradePrice("BTC-GLMR");
         if (response.statusCode == 200) {
           final coinPriceModel = CoinPirceModel.fromJson(response.data[0]);
           coinPirces(coinPriceModel);

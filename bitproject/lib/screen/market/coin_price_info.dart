@@ -40,10 +40,7 @@ Container CoinPriceContainer(
         tickers.add(ticker.market);
       }
     }
-    timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      coinController.fetchPirces(tickers);
-      for (CoinInfoModel cm in coinController.coinPriceList) {}
-    });
+    coinController.fetchPirces(tickers);
   }
 
   fetchData();
