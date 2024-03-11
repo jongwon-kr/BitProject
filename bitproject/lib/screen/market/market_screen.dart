@@ -1,37 +1,14 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:medicalapp/controller/coin_list_controller.dart';
 
-import 'package:medicalapp/models/coinInfo_model.dart';
-import 'package:medicalapp/screen/market/coin_price_info.dart';
-import 'package:medicalapp/services/upbit_coin_info_all_api.dart';
+class MarketScreen extends StatelessWidget {
+  final CoinListController coinListController = Get.put(CoinListController());
 
-class MarketScreen extends StatefulWidget {
-  static String id = "chat_screen";
-
-  const MarketScreen({super.key});
-
-  @override
-  _MarketScreenState createState() => _MarketScreenState();
-}
-
-class _MarketScreenState extends State<MarketScreen>
-    with AutomaticKeepAliveClientMixin {
-  final messageTextController = TextEditingController();
-  final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  bool isLogin = false;
-  late User loggedInUser;
-  String nickname = '';
+  MarketScreen({super.key});
   Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
-  String searchText = "";
-  late Future<List<CoinInfoModel>> coinInfos =
-      UpbitCoinInfoAllApi.getCoinInfoAll();
   late List<Map<String, dynamic>> coins;
   final List<bool> selectedMarkets = <bool>[true, false, false];
   List<Widget> Markets = <Widget>[
@@ -39,35 +16,9 @@ class _MarketScreenState extends State<MarketScreen>
     const Text('BTC'),
     const Text('관심목록')
   ];
-  final List<bool> sortCoins = <bool>[
-    true,
-    true,
-    true,
-    true
-  ]; // 한문,영문/ 현재가/ 전일대비/ 거래대금/
-  @override
-  bool get wantKeepAlive => true;
+  final List<bool> sortCoins = <bool>[true, true, true, true];
 
-  final _isRunning = false;
-  static List<String> tickers = [];
-
-  void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        isLogin = true;
-      } else {
-        isLogin = false;
-      }
-    } catch (e) {}
-  }
-
-  @override
-  void initState() {
-    getCurrentUser();
-    super.initState();
-  }
+  // 한문,영문/ 현재가/ 전일대비/ 거래대금/
 
   @override
   Widget build(BuildContext context) {
@@ -248,13 +199,9 @@ class _MarketScreenState extends State<MarketScreen>
                           ToggleButtons(
                             direction: Axis.horizontal,
                             onPressed: (int index) {
-                              setState(() {
-                                for (int i = 0;
-                                    i < selectedMarkets.length;
-                                    i++) {
-                                  selectedMarkets[i] = i == index;
-                                }
-                              });
+                              for (int i = 0; i < selectedMarkets.length; i++) {
+                                selectedMarkets[i] = i == index;
+                              }
                               print(selectedMarkets);
                             },
                             selectedBorderColor: Colors.black,
@@ -292,7 +239,6 @@ class _MarketScreenState extends State<MarketScreen>
                                     } else if (!sortCoins[0]) {
                                       sortCoins[0] = true;
                                     }
-                                    setState(() {});
                                     print("object");
                                   },
                                   child: Row(
@@ -376,27 +322,139 @@ class _MarketScreenState extends State<MarketScreen>
                       ),
                     ],
                   ),
-                  FutureBuilder<List<CoinInfoModel>>(
-                    future: coinInfos,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                          ],
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            for (CoinInfoModel ci in snapshot.data)
-                              getCoinContainer(height, width, ci)
-                          ],
-                        );
-                      }
-                    },
+                  Obx(
+                    () => coinListController.isLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: coinListController.coinPriceList.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                height: height * 0.078,
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color.fromRGBO(224, 224, 224, 1),
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: width * 0.3,
+                                      child: Row(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.only(right: 5),
+                                            child:
+                                                Icon(Icons.candlestick_chart),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: width * 0.2,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Obx(
+                                                      () => Text(
+                                                          coinListController
+                                                              .coinPriceList[
+                                                                  index]
+                                                              .first
+                                                              .market),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.25,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Obx(
+                                            () => Text(
+                                              coinListController
+                                                  .coinPriceList[index]
+                                                  .first
+                                                  .tradePrice
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              // 999퍼센트까지 표시 가능
+                                              Obx(
+                                                () => Text(
+                                                  coinListController
+                                                      .coinPriceList[index]
+                                                      .first
+                                                      .signedChangePrice
+                                                      .toString(),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.25,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          // 거래대금
+                                          Obx(
+                                            () => SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    coinListController
+                                                        .coinPriceList[index]
+                                                        .first
+                                                        .accTradePrice24H
+                                                        .toString(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                   )
                 ],
               ),
@@ -405,28 +463,5 @@ class _MarketScreenState extends State<MarketScreen>
         ),
       ),
     );
-  }
-
-  // 코인 목록
-  getCoinContainer(
-    double height,
-    double width,
-    CoinInfoModel ci,
-  ) {
-    if (selectedMarkets[0]) {
-      if (ci.market.contains("KRW-")) {
-        // 원화
-        return CoinPriceContainer(height, width, ci, selectedMarkets);
-      }
-    } else if (selectedMarkets[1]) {
-      // btc마켓
-      if (ci.market.contains("BTC-")) {
-        return CoinPriceContainer(height, width, ci, selectedMarkets);
-      }
-      // 관심목록
-    } else if (selectedMarkets[2]) {
-      return Container();
-    }
-    return Container();
   }
 }

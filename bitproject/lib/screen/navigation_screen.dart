@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medicalapp/screen/GetXHttpPage.dart';
-import 'package:medicalapp/screen/home/home_screen.dart';
+import 'package:medicalapp/screen/home_screen.dart';
 import 'package:medicalapp/screen/market/market_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -25,11 +24,11 @@ class _NavigationState extends State<NavigationScreen> {
   ];
 
   final List<Widget> screens = <Widget>[
-    const MarketScreen(),
+    MarketScreen(),
     const HomeScreen(),
     const HomeScreen(),
-    const GetXHttpPage(),
-    const GetXHttpPage(),
+    const HomeScreen(),
+    const HomeScreen(),
   ];
 
   void onTap(int index) {
