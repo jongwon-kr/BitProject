@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:medicalapp/controller/coin_list_controller.dart';
+import 'package:medicalapp/utils/changeRateBar.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24H.dart';
+import 'package:medicalapp/utils/formatSignedChangeRate.dart';
 
 class MarketScreen extends StatelessWidget {
   final CoinListController coinListController = Get.put(CoinListController());
@@ -211,8 +213,7 @@ class MarketScreen extends StatelessWidget {
                                     coinListController.selectedMarkets[i] =
                                         i == index;
                                   }
-                                  print(
-                                      "coinListController.selectedMarkets = ${coinListController.selectedMarkets}");
+                                  coinListController.fetchCoinPriceList();
                                 },
                                 selectedBorderColor: Colors.black,
                                 selectedColor: Colors.white,
@@ -425,25 +426,10 @@ class MarketScreen extends StatelessWidget {
                                         child: Row(
                                           // 등락율에 따라서 battery_0,1,2,3 등등 게이지 조절 필요
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 5),
-                                              child: coinListController
-                                                      .coinPriceList[index]
-                                                      .first
-                                                      .signedChangeRate
-                                                      .toString()
-                                                      .contains("-")
-                                                  ? Icon(
-                                                      Icons
-                                                          .battery_0_bar_rounded,
-                                                      color: Colors.blue[800],
-                                                    )
-                                                  : Icon(
-                                                      Icons
-                                                          .battery_0_bar_rounded,
-                                                      color: Colors.red[500],
-                                                    ),
+                                            changeRateBar(
+                                              coinListController:
+                                                  coinListController,
+                                              index: index,
                                             ),
                                             // 코인 이름
                                             Column(
@@ -538,13 +524,26 @@ class MarketScreen extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 // 999퍼센트까지 표시 가능
-                                                Text(
-                                                  coinListController
-                                                      .coinPriceList[index]
-                                                      .first
-                                                      .signedChangePrice
-                                                      .toString(),
-                                                ),
+                                                coinListController
+                                                        .coinPriceList[index]
+                                                        .first
+                                                        .signedChangeRate
+                                                        .toString()
+                                                        .contains('-')
+                                                    ? Text(
+                                                        "-${formatChangeRate(coinListController, index)}"
+                                                        "%",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .blue[600],
+                                                            fontSize: 13))
+                                                    : Text(
+                                                        "+${formatChangeRate(coinListController, index)}"
+                                                        "%",
+                                                        style: const TextStyle(
+                                                            color: Colors.red,
+                                                            fontSize: 13),
+                                                      ),
                                               ],
                                             )
                                           ],
