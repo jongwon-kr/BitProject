@@ -12,6 +12,8 @@ String coinPriceToJson(List<CoinPrice> data) =>
 
 class CoinPrice {
   String market;
+  String koreanName;
+  String englishName;
   String tradeDate;
   String tradeTime;
   String tradeDateKst;
@@ -40,6 +42,8 @@ class CoinPrice {
 
   CoinPrice({
     required this.market,
+    required this.koreanName,
+    required this.englishName,
     required this.tradeDate,
     required this.tradeTime,
     required this.tradeDateKst,
@@ -69,6 +73,8 @@ class CoinPrice {
 
   factory CoinPrice.fromJson(Map<String, dynamic> json) => CoinPrice(
         market: json["market"],
+        koreanName: json["koreanName"],
+        englishName: json["englishName"],
         tradeDate: json["trade_date"],
         tradeTime: json["trade_time"],
         tradeDateKst: json["trade_date_kst"],
