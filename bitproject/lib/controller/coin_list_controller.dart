@@ -31,6 +31,9 @@ class CoinListController extends GetxController {
       var response = await http
           .get(Uri.parse("https://api.upbit.com/v1/market/all?isDetails=true"));
       List<CoinList> coinList = coinListFromJson(response.body);
+      for (var c in coinList) {
+        print(c.market);
+      }
       coinsList.value = coinList;
       stopwatch.start();
       for (var element in coinsList.value) {

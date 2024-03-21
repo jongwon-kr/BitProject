@@ -8,6 +8,7 @@ import 'package:medicalapp/controller/coin_list_controller.dart';
 import 'package:medicalapp/utils/changeRateBar.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24H.dart';
 import 'package:medicalapp/utils/formatSignedChangeRate.dart';
+import 'package:medicalapp/utils/formatTradePrice.dart';
 
 class MarketScreen extends StatelessWidget {
   final CoinListController coinListController = Get.put(CoinListController());
@@ -501,13 +502,10 @@ class MarketScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              coinListController
-                                                  .coinPriceList[index]
-                                                  .first
-                                                  .tradePrice
-                                                  .toString(),
-                                            ),
+                                            formatTradePrice(
+                                                coinListController:
+                                                    coinListController,
+                                                index: index),
                                           ],
                                         ),
                                       ),
