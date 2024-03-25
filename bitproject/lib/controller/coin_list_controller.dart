@@ -27,6 +27,7 @@ class CoinListController extends GetxController {
   fetchCoinPriceList() async {
     try {
       coinsList.value.clear();
+      coinPriceList.clear();
       isLoading(true);
       var response = await http
           .get(Uri.parse("https://api.upbit.com/v1/market/all?isDetails=true"));
@@ -38,7 +39,7 @@ class CoinListController extends GetxController {
       stopwatch.start();
       for (var element in coinsList.value) {
         if (selectedMarkets[0]) {
-          if (element.market.contains("KRW")) {
+          if (element.market.contains("KRW-")) {
             var response = await http.get(Uri.parse(
                 "https://api.upbit.com/v1/ticker?markets=${element.market}"));
             var bodyList = response.body
@@ -58,7 +59,7 @@ class CoinListController extends GetxController {
             sleep(const Duration(milliseconds: 30));
           }
         } else if (selectedMarkets[1]) {
-          if (element.market.contains("BTC")) {
+          if (element.market.contains("BTC-")) {
             var response = await http.get(Uri.parse(
                 "https://api.upbit.com/v1/ticker?markets=${element.market}"));
             var bodyList = response.body
