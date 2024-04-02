@@ -28,7 +28,7 @@
   
 ## 이미지
 ### 마켓 화면
-![Screenshot_1712069182](https://github.com/jongwon-kr/BitProject/assets/76871947/471dcc8d-eb7c-4fcf-8458-27b9db521ff8)
-![Screenshot_1712069158](https://github.com/jongwon-kr/BitProject/assets/76871947/92d2c472-cd2c-46ee-8a97-fb502ab661c2)
+<img src="https://github.com/jongwon-kr/BitProject/assets/76871947/471dcc8d-eb7c-4fcf-8458-27b9db521ff8" width="380" height="800"/>
+<img src="https://github.com/jongwon-kr/BitProject/assets/76871947/92d2c472-cd2c-46ee-8a97-fb502ab661c2" width="380" height="800"/>
 
 ## END
