@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicalapp/screen/home_screen.dart';
-import 'package:medicalapp/screen/market_screen.dart';
+import 'package:medicalapp/screen/market/market_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});

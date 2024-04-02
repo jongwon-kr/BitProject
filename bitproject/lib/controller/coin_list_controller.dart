@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:medicalapp/models/coin_list_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coin_price_model.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class CoinListController extends GetxController {
   late Timer timer;
@@ -80,7 +82,7 @@ class CoinListController extends GetxController {
           }
         } else if (selectedMarkets[2]) {}
       }
-      print('doSomething() executed in ${stopwatch.elapsed}');
+      print('시세 요청 time : ${stopwatch.elapsed}');
       stopwatch.stop();
     } finally {
       isLoading(false);
