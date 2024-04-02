@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:medicalapp/models/coin_list_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coin_price_model.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class CoinListController extends GetxController {
   late Timer timer;
@@ -75,8 +73,8 @@ class CoinListController extends GetxController {
             }
             response2 = "${response2.substring(0, response2.length - 1)}}]";
             List<CoinPrice> getcoinPrice = coinPriceFromJson(response2);
-            coinPrice.value = getcoinPrice;
-            coinPriceList.add(coinPrice.value);
+            print(response2);
+            coinPriceList.add(getcoinPrice);
             sleep(const Duration(milliseconds: 30));
           }
         } else if (selectedMarkets[2]) {}
