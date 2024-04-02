@@ -40,10 +40,6 @@ class getCoinPrice extends StatelessWidget {
                 child: Row(
                   // 등락율에 따라서 battery_0,1,2,3 등등 게이지 조절 필요
                   children: [
-                    changeRateBar(
-                      coinListController: coinListController,
-                      index: index,
-                    ),
                     // 코인 이름
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,13 +59,9 @@ class getCoinPrice extends StatelessWidget {
                                   text: TextSpan(
                                     text: coinListController.sortCoins[0]
                                         ? coinListController
-                                            .coinPriceList[index]
-                                            .first
-                                            .koreanName
+                                            .coinPriceList[index].first.change
                                         : coinListController
-                                            .coinPriceList[index]
-                                            .first
-                                            .englishName,
+                                            .coinPriceList[index].first.change,
                                     style: const TextStyle(
                                         fontSize: 14, color: Colors.black),
                                   ),
@@ -81,7 +73,7 @@ class getCoinPrice extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              "${coinListController.coinPriceList[index].first.market.split("-")[1]}/${coinListController.coinPriceList[index].first.market.split("-")[0]}",
+                              "${coinListController.coinPriceList[index].first.code.split("-")[1]}/${coinListController.coinPriceList[index].first.code.split("-")[0]}",
                               style: const TextStyle(
                                   fontSize: 10, color: Colors.grey),
                             ),
@@ -94,17 +86,14 @@ class getCoinPrice extends StatelessWidget {
               ),
               SizedBox(
                 width: width * 0.25,
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    formatTradePrice(
-                        coinListController: coinListController, index: index),
-                  ],
+                  children: [],
                 ),
               ),
               SizedBox(
                 width: width * 0.2,
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
@@ -112,21 +101,6 @@ class getCoinPrice extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // 999퍼센트까지 표시 가능
-                        coinListController
-                                .coinPriceList[index].first.signedChangeRate
-                                .toString()
-                                .contains('-')
-                            ? Text(
-                                "-${formatChangeRate(coinListController, index)}"
-                                "%",
-                                style: TextStyle(
-                                    color: Colors.blue[600], fontSize: 13))
-                            : Text(
-                                "+${formatChangeRate(coinListController, index)}"
-                                "%",
-                                style: const TextStyle(
-                                    color: Colors.red, fontSize: 13),
-                              ),
                       ],
                     )
                   ],
@@ -134,21 +108,14 @@ class getCoinPrice extends StatelessWidget {
               ),
               SizedBox(
                 width: width * 0.25,
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // 거래대금
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: [
-                          coinListController.selectedMarkets[0]
-                              ? formatAccTradePrice24H(
-                                  coinListController: coinListController,
-                                  index: index)
-                              : Text(
-                                  "${coinListController.coinPriceList[index].first.accTradePrice24H.toStringAsFixed(3)}BTC")
-                        ],
+                        children: [],
                       ),
                     ),
                   ],

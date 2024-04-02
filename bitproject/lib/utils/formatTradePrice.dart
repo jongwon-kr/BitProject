@@ -1,19 +1,19 @@
 import 'package:flutter/widgets.dart';
-import 'package:medicalapp/controller/coin_list_controller.dart';
+import 'package:medicalapp/models/coin_price_model.dart';
 
 class formatTradePrice extends StatelessWidget {
   const formatTradePrice({
     super.key,
-    required this.coinListController,
+    required this.market,
     required this.index,
   });
   final int index;
-  final CoinListController coinListController;
+  final List<CoinPrice> market;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      coinListController.coinPriceList[index].first.tradePrice.toString(),
+      market[index].tradePrice.toString(),
     );
   }
 }
