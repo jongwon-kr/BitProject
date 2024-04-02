@@ -37,9 +37,8 @@ class CoinListController extends GetxController {
       for (var c in coinList) {
         print(c.market);
       }
-      coinsList.value = coinList;
       stopwatch.start();
-      for (var element in coinsList.value) {
+      for (var element in coinList) {
         if (selectedMarkets[0]) {
           if (element.market.contains("KRW-")) {
             var response = await http.get(Uri.parse(
