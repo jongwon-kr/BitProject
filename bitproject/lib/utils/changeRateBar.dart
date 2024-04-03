@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:medicalapp/controller/coin_list_controller.dart';
+import 'package:get/get.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
 import 'package:medicalapp/utils/formatSignedChangeRate.dart';
 
@@ -10,6 +10,7 @@ class changeRateBar extends StatelessWidget {
     required this.market,
     required this.index,
   });
+
   final int index;
   final List<CoinPrice> market;
 

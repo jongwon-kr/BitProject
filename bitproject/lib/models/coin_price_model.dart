@@ -9,6 +9,8 @@ CoinPrice coinPriceFromJson(String str) => CoinPrice.fromJson(json.decode(str));
 String coinPriceToJson(CoinPrice data) => json.encode(data.toJson());
 
 class CoinPrice {
+  String koreanName;
+  String englishName;
   String code;
   double openingPrice;
   double highPrice;
@@ -33,6 +35,8 @@ class CoinPrice {
 
   CoinPrice({
     required this.code,
+    required this.koreanName,
+    required this.englishName,
     required this.openingPrice,
     required this.highPrice,
     required this.lowPrice,
@@ -57,6 +61,8 @@ class CoinPrice {
 
   factory CoinPrice.fromJson(Map<String, dynamic> json) => CoinPrice(
         code: json["code"],
+        koreanName: json["korean_name"],
+        englishName: json["english_name"],
         openingPrice: json["opening_price"]?.toDouble(),
         highPrice: json["high_price"]?.toDouble(),
         lowPrice: json["low_price"]?.toDouble(),
@@ -81,6 +87,8 @@ class CoinPrice {
 
   Map<String, dynamic> toJson() => {
         "code": code,
+        "korean_name": koreanName,
+        "english_name": englishName,
         "opening_price": openingPrice,
         "high_price": highPrice,
         "low_price": lowPrice,
