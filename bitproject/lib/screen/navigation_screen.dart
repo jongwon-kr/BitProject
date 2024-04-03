@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicalapp/screen/home_screen.dart';
-import 'package:medicalapp/screen/market/market_screen.dart';
+import 'package:medicalapp/screen/market/main_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -24,7 +24,7 @@ class _NavigationState extends State<NavigationScreen> {
   ];
 
   final List<Widget> screens = <Widget>[
-    MarketScreen(),
+    const MarketScreen(),
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),

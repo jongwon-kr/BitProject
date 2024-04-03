@@ -1,11 +1,12 @@
-import 'dart:async';
-import 'dart:ffi';
+import 'package:flutter/services.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:medicalapp/controller/coin_list_controller.dart';
+import 'package:http/http.dart' as http;
+import 'package:medicalapp/models/coin_list_model.dart';
+import 'package:medicalapp/models/coin_price_model.dart';
 import 'package:medicalapp/utils/changeRateBar.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24HKrw.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24HOther.dart';
@@ -13,24 +14,169 @@ import 'package:medicalapp/utils/formatSignedChangeRate.dart';
 import 'package:medicalapp/utils/formatTradePrice.dart';
 import 'package:medicalapp/utils/formatTradePriceUsdt.dart';
 
-class MarketScreen extends StatelessWidget {
-  late Timer timer;
-  final CoinListController coinListController = Get.put(CoinListController());
-  MarketScreen({super.key});
-  Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
-  late List<Map<String, dynamic>> coins;
+import 'package:web_socket_channel/io.dart';
+
+import 'get_market_coin_list.dart';
+
+class MarketScreen extends StatefulWidget {
+  const MarketScreen({super.key});
+
+  @override
+  State<MarketScreen> createState() => _MarketScreenState();
+}
+
+class _MarketScreenState extends State<MarketScreen> {
+  final channel =
+      IOWebSocketChannel.connect(Uri.parse("wss://api.upbit.com/websocket/v1"));
+  String coins = "";
+  List<bool> selectedMarkets = [true, false, false];
+  List<bool> sortCoins = [true, true, true, true];
+  bool isLoading = true;
+  bool isSearch = false;
+  Stopwatch stopwatch = Stopwatch();
+
+  List<CoinPrice> krwMarket = <CoinPrice>[];
+  List<CoinPrice> btcMarket = <CoinPrice>[];
+  List<CoinPrice> usdtMarket = <CoinPrice>[];
+  List<CoinPrice> filteredMarket = <CoinPrice>[];
+
   List<Widget> Markets = <Widget>[
     const Text('KRW'),
     const Text('BTC'),
     const Text('USDT')
   ];
 
-  // 한문,영문/ 현재가/ 전일대비/ 거래대금/
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getCoins();
+  }
+
+  @override
+  void dispose() {
+    // 페이지를 벗어나면 스트림 연결을 종료합니다.
+    channel.sink.close();
+    super.dispose();
+  }
+
+  void getCoins() async {
+    isLoading = true;
+    var response =
+        await http.get(Uri.parse("https://api.upbit.com/v1/market/all"));
+    List<CoinList> coinList = coinListFromJson(response.body);
+    for (var coin in coinList) {
+      coins += "\"${coin.market.toString()}\",";
+    }
+    coins = coins.substring(0, coins.length - 1);
+    channel.sink.add(
+        "[{\"ticket\": \"test example\"},{\"type\": \"ticker\",\"codes\": [$coins]},{\"format\": \"DEFAULT\"}]");
+    channel.stream.listen((message) {
+      Map<String, dynamic> jsonData = json.decode(
+          "{\"korean_name\":\"koreanName\",\"english_name\":\"englishName\",${String.fromCharCodes(message).substring(1)}");
+
+      CoinPrice coinPrice = CoinPrice.fromJson(jsonData);
+      for (var coinInfo in coinList) {
+        if (coinInfo.market == coinPrice.code) {
+          coinPrice.koreanName = coinInfo.koreanName;
+          coinPrice.englishName = coinInfo.englishName;
+        }
+      }
+      if (coinPrice.code.contains("KRW-")) {
+        if (!krwMarket.any((cp) => cp.code == coinPrice.code) && !isSearch) {
+          krwMarket.add(coinPrice);
+        } else {
+          for (int i = 0; i < krwMarket.length; i++) {
+            if (krwMarket[i].code == coinPrice.code) {
+              krwMarket[i].tradePrice = coinPrice.tradePrice;
+              krwMarket[i].changeRate = coinPrice.changeRate;
+              krwMarket[i].signedChangeRate = coinPrice.signedChangeRate;
+              krwMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
+              krwMarket[i].askBid = coinPrice.askBid;
+              break;
+            }
+          }
+        }
+      } else if (coinPrice.code.contains("BTC-")) {
+        if (!btcMarket.any((cp) => cp.code == coinPrice.code) && !isSearch) {
+          btcMarket.add(coinPrice);
+        } else {
+          for (int i = 0; i < krwMarket.length; i++) {
+            if (btcMarket[i].code == coinPrice.code) {
+              btcMarket[i].tradePrice = coinPrice.tradePrice;
+              btcMarket[i].changeRate = coinPrice.changeRate;
+              btcMarket[i].signedChangeRate = coinPrice.signedChangeRate;
+              btcMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
+              btcMarket[i].askBid = coinPrice.askBid;
+              break;
+            }
+          }
+        }
+      } else {
+        if (!usdtMarket.any((cp) => cp.code == coinPrice.code) && !isSearch) {
+          usdtMarket.add(coinPrice);
+        } else {
+          for (int i = 0; i < krwMarket.length; i++) {
+            if (usdtMarket[i].code == coinPrice.code) {
+              usdtMarket[i].tradePrice = coinPrice.tradePrice;
+              usdtMarket[i].changeRate = coinPrice.changeRate;
+              usdtMarket[i].signedChangeRate = coinPrice.signedChangeRate;
+              usdtMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
+              usdtMarket[i].askBid = coinPrice.askBid;
+              break;
+            }
+          }
+        }
+      }
+      isLoading = false;
+      setState(() {});
+    });
+  }
+
+  void getSortPrice(List<CoinPrice> coinList) {
+    if (sortCoins[1]) {
+      // 현재가 내림차순
+      coinList.sort((b, a) => a.tradePrice.compareTo(b.tradePrice));
+    } else if (!sortCoins[1]) {
+      // 현재가 오름차순
+      coinList.sort((a, b) => a.tradePrice.compareTo(b.tradePrice));
+    }
+  }
+
+  void getSortChange(List<CoinPrice> coinList) {
+    if (sortCoins[2]) {
+      // 전일대비 내림차순
+      coinList.sort((b, a) => a.signedChangeRate.compareTo(b.signedChangeRate));
+    } else if (!sortCoins[2]) {
+      // 전일대비 오름차순
+      coinList.sort((a, b) => a.signedChangeRate.compareTo(b.signedChangeRate));
+    }
+  }
+
+  void getSortVolum(List<CoinPrice> coinList) {
+    if (sortCoins[3]) {
+      // 거래대금 내림차순
+      coinList.sort((b, a) => a.accTradePrice24H.compareTo(b.accTradePrice24H));
+    } else if (!sortCoins[3]) {
+      // 거래대금 오름차순
+      coinList.sort((a, b) => a.accTradePrice24H.compareTo(b.accTradePrice24H));
+    }
+  }
+
+  void filterMarketData(String searchText, List<CoinPrice> coinList) {}
 
   @override
   Widget build(BuildContext context) {
+    Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
+
     double height = MediaQuery.of(context).size.height; // 화면의 높이
     double width = MediaQuery.of(context).size.width; // 화면의 가로
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -79,10 +225,8 @@ class MarketScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 10, top: 3),
                       child: TextField(
-                        onSubmitted: (Value) async {
-                          int cnt = 0;
-                          print('coinCount = $cnt');
-                        },
+                        controller: textEditingController,
+                        onChanged: filterMarket,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -121,14 +265,11 @@ class MarketScreen extends StatelessWidget {
                               direction: Axis.horizontal,
                               onPressed: (int index) {
                                 for (int i = 0;
-                                    i <
-                                        coinListController
-                                            .selectedMarkets.length;
+                                    i < selectedMarkets.length;
                                     i++) {
-                                  coinListController.selectedMarkets[i] =
-                                      i == index;
+                                  selectedMarkets[i] = i == index;
                                 }
-                                coinListController.getMarket();
+                                setState(() {});
                               },
                               selectedBorderColor: Colors.black,
                               selectedColor: Colors.white,
@@ -138,7 +279,7 @@ class MarketScreen extends StatelessWidget {
                                 minHeight: 35,
                                 minWidth: 80,
                               ),
-                              isSelected: coinListController.selectedMarkets,
+                              isSelected: selectedMarkets,
                               children: Markets,
                             ),
                           ],
@@ -161,11 +302,10 @@ class MarketScreen extends StatelessWidget {
                                   width: width * 0.3,
                                   child: InkWell(
                                     onTap: () {
-                                      if (coinListController.sortCoins[0]) {
-                                        coinListController.sortCoins[0] = false;
-                                      } else if (!coinListController
-                                          .sortCoins[0]) {
-                                        coinListController.sortCoins[0] = true;
+                                      if (sortCoins[0]) {
+                                        sortCoins[0] = false;
+                                      } else if (!sortCoins[0]) {
+                                        sortCoins[0] = true;
                                       }
                                     },
                                     child: Row(
@@ -173,9 +313,7 @@ class MarketScreen extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          coinListController.sortCoins[0]
-                                              ? "한글명"
-                                              : "영문명",
+                                          sortCoins[0] ? "한글명" : "영문명",
                                           style: const TextStyle(fontSize: 13),
                                         ),
                                         const Padding(
@@ -193,11 +331,20 @@ class MarketScreen extends StatelessWidget {
                                   width: width * 0.25,
                                   child: InkWell(
                                     onTap: () {
-                                      if (coinListController.sortCoins[1]) {
-                                        coinListController.sortCoins[1] = false;
-                                      } else if (!coinListController
-                                          .sortCoins[1]) {
-                                        coinListController.sortCoins[1] = true;
+                                      if (sortCoins[1]) {
+                                        sortCoins[1] = false;
+                                      } else if (!sortCoins[1]) {
+                                        sortCoins[1] = true;
+                                      }
+                                      if (selectedMarkets[0]) {
+                                        getSortPrice(krwMarket);
+                                      } else if (selectedMarkets[1]) {
+                                        getSortPrice(btcMarket);
+                                      } else if (selectedMarkets[2]) {
+                                        getSortPrice(usdtMarket);
+                                      }
+                                      if (isSearch) {
+                                        getSortPrice(filteredMarket);
                                       }
                                     },
                                     child: Row(
@@ -211,7 +358,7 @@ class MarketScreen extends StatelessWidget {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 3),
-                                          child: coinListController.sortCoins[1]
+                                          child: sortCoins[1]
                                               ? const Icon(
                                                   Icons.keyboard_arrow_up,
                                                   size: 16,
@@ -229,11 +376,20 @@ class MarketScreen extends StatelessWidget {
                                   width: width * 0.2,
                                   child: InkWell(
                                     onTap: () {
-                                      if (coinListController.sortCoins[2]) {
-                                        coinListController.sortCoins[2] = false;
-                                      } else if (!coinListController
-                                          .sortCoins[2]) {
-                                        coinListController.sortCoins[2] = true;
+                                      if (sortCoins[2]) {
+                                        sortCoins[2] = false;
+                                      } else if (!sortCoins[2]) {
+                                        sortCoins[2] = true;
+                                      }
+                                      if (selectedMarkets[0]) {
+                                        getSortChange(krwMarket);
+                                      } else if (selectedMarkets[1]) {
+                                        getSortChange(btcMarket);
+                                      } else if (selectedMarkets[2]) {
+                                        getSortChange(usdtMarket);
+                                      }
+                                      if (isSearch) {
+                                        getSortChange(filteredMarket);
                                       }
                                     },
                                     child: Row(
@@ -247,7 +403,7 @@ class MarketScreen extends StatelessWidget {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 3),
-                                          child: coinListController.sortCoins[2]
+                                          child: sortCoins[2]
                                               ? const Icon(
                                                   Icons.keyboard_arrow_up,
                                                   size: 16,
@@ -265,11 +421,20 @@ class MarketScreen extends StatelessWidget {
                                   width: width * 0.25,
                                   child: InkWell(
                                     onTap: () {
-                                      if (coinListController.sortCoins[3]) {
-                                        coinListController.sortCoins[3] = false;
-                                      } else if (!coinListController
-                                          .sortCoins[3]) {
-                                        coinListController.sortCoins[3] = true;
+                                      if (sortCoins[3]) {
+                                        sortCoins[3] = false;
+                                      } else if (!sortCoins[3]) {
+                                        sortCoins[3] = true;
+                                      }
+                                      if (selectedMarkets[0]) {
+                                        getSortVolum(krwMarket);
+                                      } else if (selectedMarkets[1]) {
+                                        getSortVolum(btcMarket);
+                                      } else if (selectedMarkets[2]) {
+                                        getSortVolum(usdtMarket);
+                                      }
+                                      if (isSearch) {
+                                        getSortVolum(filteredMarket);
                                       }
                                     },
                                     child: Row(
@@ -283,7 +448,7 @@ class MarketScreen extends StatelessWidget {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 3),
-                                          child: coinListController.sortCoins[3]
+                                          child: sortCoins[3]
                                               ? const Icon(
                                                   Icons.keyboard_arrow_up,
                                                   size: 16,
@@ -301,6 +466,16 @@ class MarketScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        getMarketCoinList(
+                            selectedMarkets: selectedMarkets,
+                            krwMarket: krwMarket,
+                            btcMarket: btcMarket,
+                            usdtMarket: usdtMarket,
+                            height: height,
+                            width: width,
+                            sortCoins: sortCoins,
+                            isSearch: isSearch,
+                            filteredMarket: filteredMarket),
                       ],
                     ),
                   ],
@@ -311,5 +486,53 @@ class MarketScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void filterMarket(searchText) {
+    filteredMarket.clear();
+    if (searchText.isNotEmpty) {
+      isSearch = true;
+    } else {
+      isSearch = false;
+    }
+    if (selectedMarkets[0]) {
+      filteredMarket = krwMarket
+          .where((coin) =>
+              coin.koreanName.contains(searchText) ||
+              coin.englishName
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              coin.code
+                  .split("-")[1]
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
+          .toList();
+    } else if (selectedMarkets[1]) {
+      filteredMarket = btcMarket
+          .where((coin) =>
+              coin.koreanName.contains(searchText) ||
+              coin.englishName
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              coin.code
+                  .split("-")[1]
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
+          .toList();
+    } else if (selectedMarkets[2]) {
+      filteredMarket = usdtMarket
+          .where((coin) =>
+              coin.koreanName.contains(searchText) ||
+              coin.englishName
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              coin.code
+                  .split("-")[1]
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {});
   }
 }

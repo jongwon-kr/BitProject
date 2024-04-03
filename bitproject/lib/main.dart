@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:medicalapp/screen/market/testScreen.dart';
+import 'package:medicalapp/screen/navigation_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: (TestScreen()),
+      home: (NavigationScreen()),
     );
   }
 }
