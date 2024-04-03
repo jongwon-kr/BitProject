@@ -3,16 +3,9 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coin_list_model.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
-import 'package:medicalapp/utils/changeRateBar.dart';
-import 'package:medicalapp/utils/formatAccTradePrice24HKrw.dart';
-import 'package:medicalapp/utils/formatAccTradePrice24HOther.dart';
-import 'package:medicalapp/utils/formatSignedChangeRate.dart';
-import 'package:medicalapp/utils/formatTradePrice.dart';
-import 'package:medicalapp/utils/formatTradePriceUsdt.dart';
 
 import 'package:web_socket_channel/io.dart';
 

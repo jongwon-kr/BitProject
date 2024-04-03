@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
-import 'package:medicalapp/utils/changeRateBar.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24HKrw.dart';
 import 'package:medicalapp/utils/formatAccTradePrice24HOther.dart';
 import 'package:medicalapp/utils/formatSignedChangeRate.dart';
 import 'package:medicalapp/utils/formatTradePrice.dart';
 import 'package:medicalapp/utils/formatTradePriceUsdt.dart';
+
+import 'down_bar.dart';
+import 'rise_bar.dart';
 
 class getMarketCoinList extends StatelessWidget {
   const getMarketCoinList({
@@ -64,54 +66,60 @@ class getMarketCoinList extends StatelessWidget {
                 child: Row(
                   // 등락율에 따라서 battery_0,1,2,3 등등 게이지 조절 필요
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, top: 10, right: 13),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                border: Border(
-                              bottom: BorderSide(width: 5, color: Colors.blue),
-                            )),
-                            width: width * 0.03,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, bottom: 10, right: 13),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                border: Border(
-                                    bottom:
-                                        BorderSide(width: 0, color: Colors.red),
-                                    top: BorderSide(
-                                        width: 1, color: Colors.red))),
-                            width: width * 0.03,
-                          ),
-                        )
-                      ],
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          isSearch
+                              ? riseBar(
+                                  width: width,
+                                  height: height,
+                                  market: filteredMarket,
+                                  index: index)
+                              : selectedMarkets[0]
+                                  ? riseBar(
+                                      width: width,
+                                      height: height,
+                                      market: krwMarket,
+                                      index: index)
+                                  : selectedMarkets[1]
+                                      ? riseBar(
+                                          width: width,
+                                          height: height,
+                                          market: btcMarket,
+                                          index: index)
+                                      : riseBar(
+                                          width: width,
+                                          height: height,
+                                          market: usdtMarket,
+                                          index: index),
+                          isSearch
+                              ? downBar(
+                                  width: width,
+                                  height: height,
+                                  market: filteredMarket,
+                                  index: index)
+                              : selectedMarkets[0]
+                                  ? downBar(
+                                      width: width,
+                                      height: height,
+                                      market: krwMarket,
+                                      index: index)
+                                  : selectedMarkets[1]
+                                      ? downBar(
+                                          width: width,
+                                          height: height,
+                                          market: btcMarket,
+                                          index: index)
+                                      : downBar(
+                                          width: width,
+                                          height: height,
+                                          market: usdtMarket,
+                                          index: index),
+                        ],
+                      ),
                     ),
-                    // isSearch
-                    //     ? changeRateBar(
-                    //         market: filteredMarket,
-                    //         index: index,
-                    //       )
-                    //     : selectedMarkets[0]
-                    //         ? changeRateBar(
-                    //             market: krwMarket,
-                    //             index: index,
-                    //           )
-                    //         : selectedMarkets[1]
-                    //             ? changeRateBar(
-                    //                 market: btcMarket,
-                    //                 index: index,
-                    //               )
-                    //             : changeRateBar(
-                    //                 market: usdtMarket,
-                    //                 index: index,
-                    //               ),
+
                     // 코인 이름
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
