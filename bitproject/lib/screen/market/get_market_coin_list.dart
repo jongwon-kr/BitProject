@@ -240,11 +240,10 @@ class getMarketCoinList extends StatelessWidget {
                   ],
                 ),
               ),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
+              Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    left: isSearch
+                    right: isSearch
                         ? filteredMarket[index]
                                 .askBid
                                 .toLowerCase()
@@ -263,10 +262,12 @@ class getMarketCoinList extends StatelessWidget {
                                     .toLowerCase()
                                     .contains("ask")
                                 ? const BorderSide(
+                                    width: 2,
                                     color: Colors.blue,
                                   )
                                 : const BorderSide(
                                     width: 2,
+                                    style: BorderStyle.solid,
                                     color: Colors.red,
                                   )
                             : selectedMarkets[1]
