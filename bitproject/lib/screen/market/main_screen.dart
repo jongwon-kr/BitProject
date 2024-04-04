@@ -87,6 +87,7 @@ class _MarketScreenState extends State<MarketScreen> {
               krwMarket[i].signedChangeRate = coinPrice.signedChangeRate;
               krwMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
               krwMarket[i].askBid = coinPrice.askBid;
+              krwMarket[i].change = coinPrice.change;
               break;
             }
           }
@@ -102,6 +103,7 @@ class _MarketScreenState extends State<MarketScreen> {
               btcMarket[i].signedChangeRate = coinPrice.signedChangeRate;
               btcMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
               btcMarket[i].askBid = coinPrice.askBid;
+              btcMarket[i].change = coinPrice.change;
               break;
             }
           }
@@ -117,6 +119,7 @@ class _MarketScreenState extends State<MarketScreen> {
               usdtMarket[i].signedChangeRate = coinPrice.signedChangeRate;
               usdtMarket[i].accTradePrice24H = coinPrice.accTradePrice24H;
               usdtMarket[i].askBid = coinPrice.askBid;
+              usdtMarket[i].change = coinPrice.change;
               break;
             }
           }
@@ -161,8 +164,6 @@ class _MarketScreenState extends State<MarketScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color baseColor = const Color.fromRGBO(253, 216, 53, 1);
-
     double height = MediaQuery.of(context).size.height; // 화면의 높이
     double width = MediaQuery.of(context).size.width; // 화면의 가로
     SystemChrome.setSystemUIOverlayStyle(
@@ -177,7 +178,7 @@ class _MarketScreenState extends State<MarketScreen> {
         shadowColor: Colors.white,
         elevation: 0,
         titleSpacing: 10,
-        backgroundColor: baseColor,
+        backgroundColor: Theme.of(context).primaryColor,
         leadingWidth: 10,
         title: const Padding(
           padding: EdgeInsets.only(left: 12.0),

@@ -20,7 +20,7 @@ class riseBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, top: 10, right: 13),
-      child: market[index].signedChangeRate >= 0
+      child: market[index].change.toLowerCase().contains("rise")
           ? double.parse(formatChangeRate(market, index)) >= 12
               ? Container(
                   decoration: BoxDecoration(
@@ -96,15 +96,20 @@ class riseBar extends StatelessWidget {
                                       width: width * 0.03,
                                       height: height * 0.02,
                                     )
-          : Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: const Border(
-                    bottom: BorderSide(width: 0.1, color: Colors.red),
-                  )),
-              width: width * 0.03,
-              height: height * 0.02,
-            ),
+          : market[index].change.toLowerCase().contains("even")
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: const Border(
+                        bottom: BorderSide(width: 0.5, color: Colors.black),
+                      )),
+                  width: width * 0.03,
+                  height: height * 0.02,
+                )
+              : SizedBox(
+                  width: width * 0.03,
+                  height: height * 0.02,
+                ),
     );
   }
 }

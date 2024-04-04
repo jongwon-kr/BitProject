@@ -18,9 +18,12 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: const Color.fromRGBO(253, 216, 53, 1),
+      ),
       debugShowCheckedModeBanner: false,
-      home: (NavigationScreen()),
+      home: (const NavigationScreen()),
     );
   }
 }
