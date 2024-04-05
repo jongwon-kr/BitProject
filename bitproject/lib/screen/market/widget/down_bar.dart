@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
-import 'package:medicalapp/utils/formatSignedChangeRate.dart';
+import 'package:medicalapp/screen/market/widget/formatSignedChangeRate.dart';
 
 class downBar extends StatelessWidget {
   const downBar({
@@ -105,7 +105,10 @@ class downBar extends StatelessWidget {
                   width: width * 0.03,
                   height: height * 0.02,
                 )
-              : SizedBox(
+              : Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                  ),
                   width: width * 0.03,
                   height: height * 0.02,
                 ),

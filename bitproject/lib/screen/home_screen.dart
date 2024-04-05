@@ -34,6 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height; // 화면의 높이
     double width = MediaQuery.of(context).size.width; // 화면의 가로
