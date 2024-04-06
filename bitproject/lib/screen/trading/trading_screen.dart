@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:medicalapp/controller/chart_controller.dart';
 import 'package:medicalapp/controller/market_controller.dart';
+import 'package:medicalapp/models/coin_candle_chart/day_candle.dart';
+import 'package:medicalapp/models/coin_candle_chart/minute_candle.dart';
+import 'package:medicalapp/models/coin_candle_chart/week_or_month_candle.dart';
 import 'package:medicalapp/models/coin_order_book_model.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
 import 'package:medicalapp/models/coin_trade_model.dart';
@@ -41,12 +45,13 @@ class _TradingScreenState extends State<TradingScreen>
     _scaffoldKey.currentState?.openDrawer();
   }
 
-  bool isLoading = false;
+  bool isLoading = true;
 
   late CoinPrice coin;
   late List<CoinPrice> market;
   late CoinOrderBook coinOrderBook;
   late CoinTrade coinTrade;
+
   late List<CoinTrade> coinTrades = [];
   late IOWebSocketChannel coinPriceChannel;
   late IOWebSocketChannel orderBookChannel;
@@ -78,11 +83,9 @@ class _TradingScreenState extends State<TradingScreen>
   }
 
   void getCoindata() async {
-    isLoading = true;
     getPricese();
     getOrderBook();
     getTrade();
-    isLoading = false;
   }
 
   void getPricese() async {
@@ -109,6 +112,7 @@ class _TradingScreenState extends State<TradingScreen>
           "{\"korean_name\":\"${coin.koreanName}\",\"english_name\":\"${coin.englishName}\",${String.fromCharCodes(message).substring(1)}");
       CoinOrderBook coinOrderBook = CoinOrderBook.fromJson(jsonData);
       this.coinOrderBook = coinOrderBook;
+      isLoading = false;
       setState(() {});
     });
   }
@@ -128,7 +132,7 @@ class _TradingScreenState extends State<TradingScreen>
   }
 
   void addCoinTrade(CoinTrade trade) {
-    const int maxTradeCount = 100;
+    const int maxTradeCount = 20;
     if (coinTrades.length >= maxTradeCount) {
       coinTrades.removeLast(); // 마지막 요소 삭제
     }
@@ -143,6 +147,7 @@ class _TradingScreenState extends State<TradingScreen>
 
   @override
   Widget build(BuildContext context) {
+    final ChartController chartController = Get.put(ChartController());
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return WillPopScope(
@@ -152,7 +157,7 @@ class _TradingScreenState extends State<TradingScreen>
         tradeChannel.sink.close();
         _controller.onResume();
         Get.offAll;
-        Get.to(const NavigationScreen());
+        Get.to(() => const NavigationScreen());
         return false;
       },
       child: Scaffold(
@@ -177,7 +182,7 @@ class _TradingScreenState extends State<TradingScreen>
                   tradeChannel.sink.close();
                   _controller.onResume();
                   Get.offAll;
-                  Get.to(const NavigationScreen());
+                  Get.to(() => const NavigationScreen());
                 },
                 child: const Icon(
                   Icons.arrow_forward_ios_rounded,
@@ -214,28 +219,7 @@ class _TradingScreenState extends State<TradingScreen>
             ],
           ),
         ),
-        body: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _tabController,
-          children: [
-            // 호가 화면
-            OrderBookScreen(
-              coin: coin,
-              coinOrderBook: coinOrderBook,
-              coinTrades: coinTrades,
-            ),
-            // 차트 화면
-            const ChartScreen(),
-            // 시세 화면
-            CoinTradeScreen(
-              coin: coin,
-              coinOrderBook: coinOrderBook,
-              coinTrades: coinTrades,
-            ),
-            // 코인 정보 화면
-            const CoinInfoScreen(),
-          ],
-        ),
+        body: isLoading ? _buildLoadingIndicator() : _buildTabBarView(),
         drawer: Drawer(
           width: width * 0.6,
           child: ListView.builder(
@@ -255,9 +239,6 @@ class _TradingScreenState extends State<TradingScreen>
                             Colors.orange.withOpacity(0.8),
                             Theme.of(context).primaryColor.withOpacity(0.6),
                           ],
-                        ),
-                        borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(30),
                         ),
                       ),
                       child: Center(
@@ -289,6 +270,8 @@ class _TradingScreenState extends State<TradingScreen>
                           setCoin(market[index]);
                           getCoindata();
                           coinTrades.clear();
+                          chartController.resetChart();
+                          chartController.getCurrent200Candles();
                           Navigator.pop(context); // 변경: Drawer 닫기
                         },
                         titleTextStyle: const TextStyle(
@@ -352,6 +335,37 @@ class _TradingScreenState extends State<TradingScreen>
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(), // 로딩 표시 위젯
+    );
+  }
+
+  Widget _buildTabBarView() {
+    return TabBarView(
+      physics: const NeverScrollableScrollPhysics(),
+      controller: _tabController,
+      children: [
+        // 호가 화면
+        OrderBookScreen(
+          coin: coin,
+          coinOrderBook: coinOrderBook,
+          coinTrades: coinTrades,
+        ),
+        // 차트 화면
+        ChartScreen(coin: coin),
+        // 시세 화면
+        CoinTradeScreen(
+          coin: coin,
+          coinOrderBook: coinOrderBook,
+          coinTrades: coinTrades,
+        ),
+        // 코인 정보 화면
+        const CoinInfoScreen(),
+      ],
     );
   }
 }

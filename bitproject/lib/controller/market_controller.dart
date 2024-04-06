@@ -36,18 +36,6 @@ class MarketController extends GetxController {
 
   @override
   void onInit() {
-    // scrollController.addListener(() {
-    //   if (scrollController.position.userScrollDirection ==
-    //       ScrollDirection.forward) {
-    //     print("스크롤중 forward state : $_isPaused");
-    //     onPause(); // 스크롤 시작 시 MarketController 일시 중지
-    //   } else if (scrollController.position.userScrollDirection ==
-    //       ScrollDirection.reverse) {
-    //     print("스크롤중 reverse state : $_isPaused");
-    //     onPause(); // 스크롤 시작 시 MarketController 일시 중지
-    //   }
-    // });
-
     getCoins();
     super.onInit();
   }
