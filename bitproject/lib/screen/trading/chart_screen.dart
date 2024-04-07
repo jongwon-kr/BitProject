@@ -17,7 +17,6 @@ class ChartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     _controller.selectcoin = coin.code;
     final TooltipBehavior tooltipBehavior = TooltipBehavior(
       enable: true,
@@ -47,7 +46,7 @@ class ChartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 DropdownButton<String>(
                   value: _controller.selectTime,
@@ -105,24 +104,34 @@ class ChartScreen extends StatelessWidget {
                       height: height * 0.75,
                       child: _controller.selectTime.contains("minutes")
                           ? SfCartesianChart(
-                              tooltipBehavior: tooltipBehavior,
                               primaryXAxis: const DateTimeCategoryAxis(
                                 isVisible: true,
                                 isInversed: true,
-                                majorGridLines:
-                                    MajorGridLines(width: 0, color: Colors.red),
                                 initialZoomFactor: 0.5,
                                 initialZoomPosition: 0.5,
                               ),
-                              primaryYAxis: const NumericAxis(
+                              primaryYAxis: NumericAxis(
+                                labelIntersectAction:
+                                    AxisLabelIntersectAction.multipleRows,
+                                maximum: _controller.minuteCandle
+                                    .map((candle) => candle.highPrice)
+                                    .reduce((max, value) =>
+                                        value > max ? value : max),
+                                minimum: _controller.minuteCandle
+                                    .map((candle) => candle.highPrice)
+                                    .reduce((max, value) =>
+                                        value < max ? value : max),
                                 opposedPosition: true,
-                                axisLine: AxisLine(width: 0),
+                                axisLine: const AxisLine(width: 0),
                                 initialZoomFactor: 0.8,
                                 initialZoomPosition: 0.2,
                               ),
-                              enableAxisAnimation: true,
+
                               series: <CandleSeries<MinuteCandle, DateTime>>[
                                 CandleSeries<MinuteCandle, DateTime>(
+                                  enableTooltip: true,
+                                  animationDuration: 0,
+                                  name: coin.code,
                                   dataSource: _controller.minuteCandle,
                                   xValueMapper: (MinuteCandle candle, _) =>
                                       DateTime.parse(candle.candleDateTimeKst),
@@ -134,12 +143,15 @@ class ChartScreen extends StatelessWidget {
                                       candle.openingPrice,
                                   closeValueMapper: (MinuteCandle candle, _) =>
                                       candle.tradePrice,
-                                  bearColor: Colors.red,
-                                  bullColor: Colors.blue,
-                                  // 툴팁 설정
-                                  enableTooltip: true,
+                                  borderWidth: 1.5,
+                                  enableSolidCandles: true,
+                                  bullColor: Colors.red,
+                                  bearColor:
+                                      const Color.fromRGBO(21, 101, 192, 1),
                                 ),
                               ],
+                              tooltipBehavior: tooltipBehavior,
+
                               zoomPanBehavior: ZoomPanBehavior(
                                 enablePanning: true,
                                 enablePinching: true,
@@ -147,12 +159,9 @@ class ChartScreen extends StatelessWidget {
                             )
                           : _controller.selectTime.contains("days")
                               ? SfCartesianChart(
-                                  tooltipBehavior: tooltipBehavior,
                                   primaryXAxis: const DateTimeCategoryAxis(
                                     isVisible: true,
                                     isInversed: true,
-                                    majorGridLines: MajorGridLines(
-                                        width: 0, color: Colors.red),
                                     initialZoomFactor: 0.5,
                                     initialZoomPosition: 0.5,
                                   ),
@@ -162,9 +171,10 @@ class ChartScreen extends StatelessWidget {
                                     initialZoomFactor: 0.8,
                                     initialZoomPosition: 0.2,
                                   ),
-                                  enableAxisAnimation: true,
                                   series: <CandleSeries<DayCandle, DateTime>>[
                                     CandleSeries<DayCandle, DateTime>(
+                                      animationDuration: 0,
+                                      name: coin.code,
                                       dataSource: _controller.dayCandle,
                                       xValueMapper: (DayCandle candle, _) =>
                                           DateTime.parse(
@@ -177,10 +187,11 @@ class ChartScreen extends StatelessWidget {
                                           candle.openingPrice,
                                       closeValueMapper: (DayCandle candle, _) =>
                                           candle.tradePrice,
-                                      bearColor: Colors.red,
-                                      bullColor: Colors.blue,
-                                      // 툴팁 설정
-                                      enableTooltip: true,
+                                      borderWidth: 1.5,
+                                      enableSolidCandles: true,
+                                      bullColor: Colors.red,
+                                      bearColor:
+                                          const Color.fromRGBO(21, 101, 192, 1),
                                     ),
                                   ],
                                   zoomPanBehavior: ZoomPanBehavior(
@@ -191,12 +202,9 @@ class ChartScreen extends StatelessWidget {
                               : _controller.selectTime.contains("weeks") ||
                                       _controller.selectTime.contains("months")
                                   ? SfCartesianChart(
-                                      tooltipBehavior: tooltipBehavior,
                                       primaryXAxis: const DateTimeCategoryAxis(
                                         isVisible: true,
                                         isInversed: true,
-                                        majorGridLines: MajorGridLines(
-                                            width: 0, color: Colors.red),
                                         initialZoomFactor: 0.5,
                                         initialZoomPosition: 0.5,
                                       ),
@@ -206,11 +214,12 @@ class ChartScreen extends StatelessWidget {
                                         initialZoomFactor: 0.8,
                                         initialZoomPosition: 0.2,
                                       ),
-                                      enableAxisAnimation: true,
                                       series: <CandleSeries<WeekOrMonthCandle,
                                           DateTime>>[
                                         CandleSeries<WeekOrMonthCandle,
                                             DateTime>(
+                                          animationDuration: 0,
+                                          name: coin.code,
                                           dataSource:
                                               _controller.weekOrMonthCandle,
                                           xValueMapper:
@@ -229,10 +238,11 @@ class ChartScreen extends StatelessWidget {
                                           closeValueMapper:
                                               (WeekOrMonthCandle candle, _) =>
                                                   candle.tradePrice,
-                                          bearColor: Colors.red,
-                                          bullColor: Colors.blue,
-                                          // 툴팁 설정
-                                          enableTooltip: true,
+                                          borderWidth: 1.5,
+                                          enableSolidCandles: true,
+                                          bullColor: Colors.red,
+                                          bearColor: const Color.fromRGBO(
+                                              21, 101, 192, 1),
                                         ),
                                       ],
                                       zoomPanBehavior: ZoomPanBehavior(

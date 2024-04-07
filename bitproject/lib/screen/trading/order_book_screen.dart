@@ -92,7 +92,7 @@ class OrderBookScreen extends StatelessWidget {
             // 두 번째 column
             Expanded(
               child: Container(
-                color: Colors.blue[400],
+                color: Colors.blue[300],
                 child: Column(
                   children:
                       coinOrderBook.orderbookUnits.reversed.map<Widget>((item) {

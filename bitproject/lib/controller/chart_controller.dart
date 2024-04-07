@@ -14,10 +14,13 @@ class ChartController extends GetxController {
 
   bool isOnTooltip = true;
   final ScrollController scrollController = ScrollController();
+  final PageController pageController = PageController();
   late Timer _timer;
   late String selectcoin = "KRW-BTC";
   String selectMinute = "1분"; // 1,3,5,15,30,60,240
-  var selectTime = "minutes"; // 일, 주, 월
+  var selectTime = "minutes";
+
+  get isLoading => null; // 일, 주, 월
   @override
   void onInit() {
     getCurrent200Candles();
@@ -72,7 +75,7 @@ class ChartController extends GetxController {
     } else if (selectTime.contains("days")) {
       try {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime/?market=$code&count=1"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=1"));
         if (response.statusCode == 200) {
           List<DayCandle> candles = dayCandleFromJson(response.body);
           if (minuteCandle.first.candleDateTimeKst ==
@@ -90,7 +93,7 @@ class ChartController extends GetxController {
     } else if (selectTime.contains("weeks") || selectTime.contains("months")) {
       try {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime/?market=$code&count=1"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=1"));
         if (response.statusCode == 200) {
           List<WeekOrMonthCandle> candles =
               weekOrMonthCandleFromJson(response.body);
@@ -114,7 +117,7 @@ class ChartController extends GetxController {
     try {
       if (minuteCandle.isEmpty) {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime/${selectMinute.substring(0, selectMinute.length - 1)}?market=$code&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime/${selectMinute.substring(0, selectMinute.length - 1)}?market=$code&count=50"));
         if (response.statusCode == 200) {
           List<MinuteCandle> candles = minuteCandleFromJson(response.body);
           for (var candle in candles) {
@@ -123,7 +126,7 @@ class ChartController extends GetxController {
         }
       } else {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime/${selectMinute.substring(0, selectMinute.length - 1)}?market=$code&to=${minuteCandle.last.candleDateTimeUtc}&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime/${selectMinute.substring(0, selectMinute.length - 1)}?market=$code&to=${minuteCandle.last.candleDateTimeUtc}&count=50"));
         if (response.statusCode == 200) {
           List<MinuteCandle> candles = minuteCandleFromJson(response.body);
           for (var candle in candles) {
@@ -140,7 +143,7 @@ class ChartController extends GetxController {
     try {
       if (dayCandle.isEmpty) {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=50"));
         if (response.statusCode == 200) {
           List<DayCandle> candles = dayCandleFromJson(response.body);
           for (var candle in candles) {
@@ -149,7 +152,7 @@ class ChartController extends GetxController {
         }
       } else {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime?market=$code&to=${dayCandle.last.candleDateTimeUtc}&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&to=${dayCandle.last.candleDateTimeUtc}&count=50"));
         if (response.statusCode == 200) {
           List<DayCandle> candles = dayCandleFromJson(response.body);
           for (var candle in candles) {
@@ -171,7 +174,7 @@ class ChartController extends GetxController {
     try {
       if (weekOrMonthCandle.isEmpty) {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&count=50"));
         if (response.statusCode == 200) {
           List<WeekOrMonthCandle> candles =
               weekOrMonthCandleFromJson(response.body);
@@ -182,7 +185,7 @@ class ChartController extends GetxController {
         }
       } else {
         var response = await http.get(Uri.parse(
-            "https://api.upbit.com/v1/candles/$selectTime?market=$code&to=${weekOrMonthCandle.last.candleDateTimeUtc}&count=200"));
+            "https://api.upbit.com/v1/candles/$selectTime?market=$code&to=${weekOrMonthCandle.last.candleDateTimeUtc}&count=50"));
         if (response.statusCode == 200) {
           List<WeekOrMonthCandle> candles =
               weekOrMonthCandleFromJson(response.body);
