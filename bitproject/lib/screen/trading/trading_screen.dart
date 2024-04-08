@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medicalapp/controller/chart_controller.dart';
+import 'package:medicalapp/controller/trading_controller.dart';
 import 'package:medicalapp/controller/market_controller.dart';
 import 'package:medicalapp/models/coin_candle_chart/day_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/minute_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/week_or_month_candle.dart';
+import 'package:medicalapp/models/coin_info_model.dart';
 import 'package:medicalapp/models/coin_order_book_model.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
 import 'package:medicalapp/models/coin_trade_model.dart';
@@ -47,6 +48,7 @@ class _TradingScreenState extends State<TradingScreen>
 
   bool isLoading = true;
 
+  late CoinInfo coinInfo;
   late CoinPrice coin;
   late List<CoinPrice> market;
   late CoinOrderBook coinOrderBook;
@@ -147,7 +149,8 @@ class _TradingScreenState extends State<TradingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ChartController chartController = Get.put(ChartController());
+    final TradingController chartController = Get.put(TradingController());
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return WillPopScope(
@@ -272,6 +275,7 @@ class _TradingScreenState extends State<TradingScreen>
                           coinTrades.clear();
                           chartController.resetChart();
                           chartController.getCurrent200Candles();
+                          chartController.getCoinInfo(coin.code);
                           Navigator.pop(context); // 변경: Drawer 닫기
                         },
                         titleTextStyle: const TextStyle(
@@ -309,9 +313,12 @@ class _TradingScreenState extends State<TradingScreen>
                     coinPriceChannel.sink.close();
                     orderBookChannel.sink.close();
                     tradeChannel.sink.close();
-                    setCoin(market[index]); // 변경: 새로운 코인으로 업데이트
+                    setCoin(market[index]);
                     getCoindata();
                     coinTrades.clear();
+                    chartController.resetChart();
+                    chartController.getCurrent200Candles();
+                    chartController.getCoinInfo(coin.code);
                     Navigator.pop(context); // 변경: Drawer 닫기
                   },
                   titleTextStyle: const TextStyle(
@@ -364,7 +371,9 @@ class _TradingScreenState extends State<TradingScreen>
           coinTrades: coinTrades,
         ),
         // 코인 정보 화면
-        const CoinInfoScreen(),
+        CoinInfoScreen(
+          coin: coin,
+        ),
       ],
     );
   }

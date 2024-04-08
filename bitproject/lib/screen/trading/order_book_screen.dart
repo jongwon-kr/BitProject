@@ -202,14 +202,21 @@ class OrderBookScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("거래량"),
+                            SizedBox(
+                              width: width * 0.13,
+                              child: const Text("거래량"),
+                            ),
                             Column(
                               children: [
-                                Text(
-                                  otherf.format(coin.accTradeVolume24H),
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.black,
+                                SizedBox(
+                                  width: width * 0.17,
+                                  child: Text(
+                                    otherf.format(coin.accTradeVolume24H),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -232,14 +239,21 @@ class OrderBookScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text("거래금"),
+                                SizedBox(
+                                  width: width * 0.13,
+                                  child: const Text("거래금"),
+                                ),
                                 Column(
                                   children: [
-                                    Text(
-                                      "${krwf.format(coin.accTradePrice24H).substring(0, krwf.format(coin.accTradePrice24H).length - 8)}백만",
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                        color: Colors.black87,
+                                    SizedBox(
+                                      width: width * 0.17,
+                                      child: Text(
+                                        "${krwf.format(coin.accTradePrice24H).substring(0, krwf.format(coin.accTradePrice24H).length - 8)}백만",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.black87,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -256,16 +270,19 @@ class OrderBookScreen extends StatelessWidget {
                         padding:
                             const EdgeInsets.only(top: 4, left: 4, right: 4),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text("52주최고"),
                             Column(
                               children: [
-                                Text(
-                                  otherf.format(coin.highest52WeekPrice),
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.red,
+                                SizedBox(
+                                  width: width * 0.16,
+                                  child: Text(
+                                    otherf.format(coin.highest52WeekPrice),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                                 Text(
@@ -290,11 +307,15 @@ class OrderBookScreen extends StatelessWidget {
                           const Text("52주최저"),
                           Column(
                             children: [
-                              Text(
-                                otherf.format(coin.lowest52WeekPrice),
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.blue,
+                              SizedBox(
+                                width: width * 0.16,
+                                child: Text(
+                                  otherf.format(coin.lowest52WeekPrice),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.blue,
+                                  ),
                                 ),
                               ),
                               Text(
@@ -320,11 +341,17 @@ class OrderBookScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("전일종가"),
-                            Text(otherf.format(coin.prevClosingPrice),
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                ))
+                            const SizedBox(
+                              child: Text("전일종가"),
+                            ),
+                            SizedBox(
+                              width: width * 0.16,
+                              child: Text(otherf.format(coin.prevClosingPrice),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                  )),
+                            )
                           ],
                         ),
                       ),
@@ -335,24 +362,35 @@ class OrderBookScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text("당일고가"),
-                          Text(otherf.format(coin.highPrice),
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: Colors.red,
-                              ))
+                          SizedBox(
+                            width: width * 0.16,
+                            child: Text(otherf.format(coin.highPrice),
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.red,
+                                )),
+                          )
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("당일저가"),
-                          Text(otherf.format(coin.lowPrice),
-                              style: const TextStyle(
-                                  fontSize: 11, color: Colors.blue))
-                        ],
+                    Container(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 4, left: 4, right: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text("당일저가"),
+                            SizedBox(
+                              width: width * 0.16,
+                              child: Text(otherf.format(coin.lowPrice),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 11, color: Colors.blue)),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -373,6 +411,7 @@ class OrderBookScreen extends StatelessWidget {
                           ),
                           Text(
                             otherf.format(askTotalSize),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -491,6 +530,7 @@ class OrderBookScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     otherf.format(bidTotalSize),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ],
                               ),
@@ -531,7 +571,9 @@ class OrderBookScreen extends StatelessWidget {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                SizedBox(
+                                  width: width * 0.16,
+                                  child: Text(
                                     coin.code.contains("BTC-")
                                         ? btcf.format(item.tradePrice)
                                         : otherf.format(item.tradePrice),
@@ -542,21 +584,28 @@ class OrderBookScreen extends StatelessWidget {
                                                 .toLowerCase()
                                                 .contains("bid")
                                             ? Colors.red
-                                            : Colors.blue)),
-                                Text(
-                                  coin.code.contains("BTC-")
-                                      ? btcf.format(
-                                          item.tradePrice * item.tradeVolume)
-                                      : otherf.format(
-                                          item.tradePrice * item.tradeVolume),
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: item.askBid
-                                              .toLowerCase()
-                                              .contains("bid")
-                                          ? Colors.red
-                                          : Colors.blue),
+                                            : Colors.blue),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: width * 0.17,
+                                  child: Text(
+                                    coin.code.contains("BTC-")
+                                        ? btcf.format(
+                                            item.tradePrice * item.tradeVolume)
+                                        : otherf.format(
+                                            item.tradePrice * item.tradeVolume),
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: item.askBid
+                                                .toLowerCase()
+                                                .contains("bid")
+                                            ? Colors.red
+                                            : Colors.blue),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             );

@@ -78,7 +78,7 @@ class MarketScreen extends StatelessWidget {
               children: [
                 Container(
                   width: width,
-                  height: height * 0.17,
+                  height: height * 0.13,
                   color: Colors.yellow[600],
                   child: Column(
                     children: [

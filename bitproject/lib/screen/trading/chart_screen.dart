@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:medicalapp/controller/chart_controller.dart';
+import 'package:medicalapp/controller/trading_controller.dart';
 import 'package:medicalapp/models/coin_candle_chart/day_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/minute_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/week_or_month_candle.dart';
@@ -10,7 +10,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ChartScreen extends StatelessWidget {
   ChartScreen({Key? key, required this.coin}) : super(key: key);
 
-  final ChartController _controller = Get.put(ChartController());
+  final TradingController _controller = Get.put(TradingController());
 
   final CoinPrice coin;
 

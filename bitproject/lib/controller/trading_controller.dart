@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,11 +7,13 @@ import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coin_candle_chart/day_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/minute_candle.dart';
 import 'package:medicalapp/models/coin_candle_chart/week_or_month_candle.dart';
+import 'package:medicalapp/models/coin_info_model.dart';
 
-class ChartController extends GetxController {
+class TradingController extends GetxController {
   late var minuteCandle = <MinuteCandle>[].obs; // 분봉
   late var dayCandle = <DayCandle>[].obs; // 일봉
   late var weekOrMonthCandle = <WeekOrMonthCandle>[].obs; // 주봉
+  late var coinInfo;
 
   bool isOnTooltip = true;
   final ScrollController scrollController = ScrollController();
@@ -18,11 +21,11 @@ class ChartController extends GetxController {
   late Timer _timer;
   late String selectcoin = "KRW-BTC";
   String selectMinute = "1분"; // 1,3,5,15,30,60,240
-  var selectTime = "minutes";
+  var selectTime = "days";
 
-  get isLoading => null; // 일, 주, 월
   @override
   void onInit() {
+    getCoinInfo(selectcoin);
     getCurrent200Candles();
     // 10초마다 데이터 업데이트
     _timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
@@ -197,5 +200,18 @@ class ChartController extends GetxController {
     } catch (error) {}
     update();
     // get week or Month candles
+  }
+
+  void getCoinInfo(String code) async {
+    coinInfo = null;
+    var response = await http.get(
+        Uri.parse("http://222.119.233.177:5000/get-coin-info/market=$code"));
+    if (response.statusCode == 200) {
+      Future.delayed(const Duration(seconds: 2));
+      CoinInfo coinInfo = coinInfoFromJson(utf8.decode(response.bodyBytes));
+      this.coinInfo = coinInfo;
+    } else {
+      print("실패");
+    }
   }
 }
