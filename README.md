@@ -53,6 +53,7 @@
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/5348c453-295f-461b-a6e4-d4eb5b7e63a4" width="200" height="400">
 
 ## Trading
+#### 주요 사용 기술
 1) Getx : GetX/Obx상태 관리, controller)
 2) http : RestAPI 호출(Springboot에서 구현한 코인 정보 API 서비스를 호출, 캔들 차트 API데이터를 호출)
 3) WebSocketChannel : 구독형 WebSockerAPI 호출(호가창, 시세 데이터를 구독하여 받아옴)
