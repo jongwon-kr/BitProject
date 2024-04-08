@@ -32,7 +32,7 @@
 - Docket
 
 ## 구현 영상
-
+https://github.com/jongwon-kr/BitProject/assets/76871947/6d10cd07-e9a4-43f4-ba3f-6492f17cfc17
 ## 서비스 개발 요약 및 이미지
 ### 마켓 화면
 
