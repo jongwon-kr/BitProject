@@ -39,6 +39,7 @@
 
 ## 구현 영상(RestAPI 호출)
 Springboot환경에서 RestAPI 서버를 구축하여 셀레니움을 통해 업비트 코인 정보를 크롤링하여 api를 호출받고 정보들을 json데이터로 반환해줌
+API 구현 Github 링크 : https://github.com/jongwon-kr/coinProjectSpring
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/pbG5uMikTBQ/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
 
 ## 서비스 개발 요약 및 이미지
