@@ -31,9 +31,13 @@
 - Intellij
 - Docket
 
-## 구현 영상
+## 구현 영상(마켓)
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aw1K01BxLdc/0.jpg)](https://www.youtube.com/watch?v=aw1K01BxLdc)
+
+## 구현 영상(트레이딩)
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/J9DgC26hk6M/0.jpg)](https://www.youtube.com/watch?v=J9DgC26hk6M)
+
+## 구현 영상(RestAPI 호출)
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/pbG5uMikTBQ/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
 
 ## 서비스 개발 요약 및 이미지
