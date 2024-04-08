@@ -41,9 +41,12 @@
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/pbG5uMikTBQ/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
 
 ## 서비스 개발 요약 및 이미지
+## 마켓
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/60593c97-c90d-43bf-991c-db1d3df43b6e" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/fadf09b9-5849-4f3b-ae60-071416083045" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/5348c453-295f-461b-a6e4-d4eb5b7e63a4" width="200" height="400">
+
+##Trading
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/bb403436-8742-4be8-8657-a034062859bb" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/8a759b62-daee-4f75-8c8b-34da6c3d9394" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/71ff33e0-0003-4e7c-8e9e-f95b2f07778e" width="200" height="400">
