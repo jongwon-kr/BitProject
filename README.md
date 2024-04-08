@@ -44,17 +44,23 @@
 
 ## 서비스 개발 요약 및 이미지
 ## Market
+#### 주요 사용 기술
+1) Getx : GetX/Obx상태 관리, GetBuilder반응 상태 관리, controller)
+2) http : RestAPI 호출(코인 마켓의 코인 리스트 데이터 받아옴)
+3) WebSocketChannel : 구독형 WebSockerAPI 호출(코인 마켓에 있는 데이터들을 채널을 통해 받아옴)
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/60593c97-c90d-43bf-991c-db1d3df43b6e" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/fadf09b9-5849-4f3b-ae60-071416083045" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/5348c453-295f-461b-a6e4-d4eb5b7e63a4" width="200" height="400">
 
 ## Trading
+1) Getx : GetX/Obx상태 관리, controller)
+2) http : RestAPI 호출(Springboot에서 구현한 코인 정보 API 서비스를 호출, 캔들 차트 API데이터를 호출)
+3) WebSocketChannel : 구독형 WebSockerAPI 호출(호가창, 시세 데이터를 구독하여 받아옴)
+4) SfCartesianChart : 캔들 차트를 구현하기 위해 사용함
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/bb403436-8742-4be8-8657-a034062859bb" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/8a759b62-daee-4f75-8c8b-34da6c3d9394" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/71ff33e0-0003-4e7c-8e9e-f95b2f07778e" width="200" height="400">
 <img src="https://github.com/jongwon-kr/BitProject/assets/76871947/e659831b-e898-4e25-8e83-368e174a4758" width="200" height="400">
-
-### 마켓 화면
 
 ## END
 
