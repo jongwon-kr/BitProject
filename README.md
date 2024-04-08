@@ -32,9 +32,9 @@
 - Docket
 
 ## 구현 영상
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=aw1K01BxLdc)
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=J9DgC26hk6M)
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/aw1K01BxLdc/0.jpg)](https://www.youtube.com/watch?v=aw1K01BxLdc)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/J9DgC26hk6M/0.jpg)](https://www.youtube.com/watch?v=J9DgC26hk6M)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/pbG5uMikTBQ/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
 
 ## 서비스 개발 요약 및 이미지
 ### 마켓 화면
