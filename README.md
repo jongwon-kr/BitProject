@@ -35,9 +35,5 @@
 
 ## 서비스 개발 요약 및 이미지
 ### 마켓 화면
-<img src="https://github.com/jongwon-kr/BitProject/assets/76871947/471dcc8d-eb7c-4fcf-8458-27b9db521ff8" width="380" height="800"/>
-![시연 영상 Restapi](https://github.com/jongwon-kr/BitProject/assets/76871947/fb93fd01-5386-4147-90f5-070e70afe92d)
-
-<img src="https://github.com/jongwon-kr/BitProject/assets/76871947/92d2c472-cd2c-46ee-8a97-fb502ab661c2" width="380" height="800"/>
 
 ## END
