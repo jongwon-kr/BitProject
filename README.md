@@ -41,7 +41,7 @@
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/pbG5uMikTBQ/0.jpg)](https://www.youtube.com/watch?v=pbG5uMikTBQ)
 
 ## 서비스 개발 요약 및 이미지
-![krw마켓](https://github.com/jongwon-kr/BitProject/assets/76871947/60593c97-c90d-43bf-991c-db1d3df43b6e)
+![krw마켓](https://github.com/jongwon-kr/BitProject/assets/76871947/60593c97-c90d-43bf-991c-db1d3df43b6e){: width="200" height="500"}
 ![btc마켓](https://github.com/jongwon-kr/BitProject/assets/76871947/fadf09b9-5849-4f3b-ae60-071416083045)
 ![usdt마켓](https://github.com/jongwon-kr/BitProject/assets/76871947/5348c453-295f-461b-a6e4-d4eb5b7e63a4)
 ![호가창](https://github.com/jongwon-kr/BitProject/assets/76871947/bb403436-8742-4be8-8657-a034062859bb)
