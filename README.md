@@ -32,7 +32,8 @@
 - Docket
 
 ## 구현 영상
-https://github.com/jongwon-kr/BitProject/assets/76871947/6d10cd07-e9a4-43f4-ba3f-6492f17cfc17
+![시연 영상 Restapi](https://github.com/jongwon-kr/BitProject/assets/76871947/e08c9288-f780-456a-9f2e-4f5889df951d)
+
 ## 서비스 개발 요약 및 이미지
 ### 마켓 화면
 
