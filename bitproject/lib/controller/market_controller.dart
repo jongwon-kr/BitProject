@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:medicalapp/models/coin_list_model.dart';
 import 'package:medicalapp/models/coin_price_model.dart';
-import 'package:medicalapp/screen/trading/order_book_screen.dart';
 import 'package:web_socket_channel/io.dart';
 
 class MarketController extends GetxController {
