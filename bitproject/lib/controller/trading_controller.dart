@@ -205,7 +205,7 @@ class TradingController extends GetxController {
   void getCoinInfo(String code) async {
     coinInfo = null;
     var response = await http
-        .get(Uri.parse("http://222.119.233.177:5000/coinInfo/market/code"));
+        .get(Uri.parse("http://222.119.233.177:5000/coin-info/$code"));
     if (response.statusCode == 200) {
       Future.delayed(const Duration(seconds: 2));
       CoinInfo coinInfo = coinInfoFromJson(utf8.decode(response.bodyBytes));
