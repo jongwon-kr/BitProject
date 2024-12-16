@@ -17,6 +17,8 @@ Java, Dart, Springboot, Flutter, VsCode, intellij, Github
 - 거래소에서 제공하지 않는 코인 정보를 Springboot 환경에서 RestAPI를 구현하고 Flutter와 연동
 - 실시간 데이터들을 Flutter의 Getx라이브러리를 통해 상태관리를 하며 KRW, BTC, USDT 마켓 구현과 각 코인별 호가창, 차트, 시세, 코인정보 구현
 
+### 시스템 아키텍처
+
 ### 느낀점 및 문제 해결
 - 거래소의 API를 이용하며 데이터에 대해 밀리초단위로 업데이트가 필요할 경우 Websocket으로 채널을 생성하여 구현하거나 마켓 코인 리스트 정보처럼 지속적인 데이터의 변화가 필요없을 경우 RestAPI를 통해 호출하며 각 데이터마다 사용해야하는 기술들을 배움.
 - Springboot를 통해 제공되지 않은 데이터를 직접 API로 구현을 해보며 API의 형태, 통신이 되는 원리와 같은 지식을 얻었다.
